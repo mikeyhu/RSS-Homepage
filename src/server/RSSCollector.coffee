@@ -3,7 +3,7 @@ http = require 'http'
 
 exports.createRSSCollector = ->
 
-	requestRSS:(connectionString,fun)->
+	requestFeed:(connectionString,fun)->
 		data=""
 		http.get connectionString, (res) ->
 			res.setEncoding('utf8')
@@ -15,8 +15,14 @@ exports.createRSSCollector = ->
 			console.log("Got error: " + e.message)
 			fun(e.message,null)
 
-	parseRSS:(data,fun) ->
+	parseFeed:(data,fun) ->
 		parser = new xml2js.Parser({explicitArray:false})
 		parser.parseString data, (err,result)->
-			set = result?.rss.channel
-			fun(err,set)
+			if result.rss
+				fun(err,result.rss.channel)
+			else if result.feed
+				fun(err,result.feed)
+			else
+				fun("Unable to parse feed",null)
+
+
