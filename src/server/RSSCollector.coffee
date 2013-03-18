@@ -1,5 +1,6 @@
 xml2js = require 'xml2js'
 http = require 'http'
+_ = require 'underscore'
 
 exports.createRSSCollector = ->
 
@@ -17,12 +18,25 @@ exports.createRSSCollector = ->
 
 	parseFeed:(data,fun) ->
 		parser = new xml2js.Parser({explicitArray:false})
-		parser.parseString data, (err,result)->
-			if result.rss
-				fun(err,result.rss.channel)
+		parser.parseString data, (err,result)=>
+			if err
+				fun(err,null)
+			else if result.rss
+				fun(null,@parseRSS result.rss.channel)
 			else if result.feed
-				fun(err,result.feed)
+				fun(null,@parseAtom result.feed)
 			else
 				fun("Unable to parse feed",null)
 
+	parseAtom:(data)->
+		{
+			title:data.title
+			entry:_.flatten([data.entry])
+		}
+
+	parseRSS:(data)->
+		{
+			title:data.title
+			entry:_.flatten([data.item])
+		}
 

@@ -35,6 +35,7 @@ describe 'A RSS collector', ->
 		@collector.parseFeed data,(err,result)->
 			expect(err).to.be.null
 			expect(result.title,"title").to.equal("BBC News - Home")
+			expect(result.entry[0].title).to.equal("Cameron halts press regulation talks")
 			done()
 	it 'should be able to retrieve and parse some RSS XML', (done)->
 		@collector.requestFeed FakeRSS,(err,result)->
@@ -67,4 +68,5 @@ describe 'A RSS collector', ->
 		@collector.parseFeed data,(err,result)->
 			expect(err).to.be.null
 			expect(result.title,"title").to.equal("Example Feed")
+			expect(result.entry[0].title).to.equal("Atom-Powered Robots Run Amok")
 			done()
