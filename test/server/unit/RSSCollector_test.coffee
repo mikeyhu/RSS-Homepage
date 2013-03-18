@@ -36,12 +36,15 @@ describe 'A RSS collector', ->
 			expect(err).to.be.null
 			expect(result.title,"title").to.equal("BBC News - Home")
 			expect(result.entry[0].title).to.equal("Cameron halts press regulation talks")
+			expect(result.entry[1].link).to.equal("http://www.bbc.co.uk/news/world-europe-21793224#sa-ns_mchannel=rss&ns_source=PublicRSS20-sa")
 			done()
+
 	it 'should be able to retrieve and parse some RSS XML', (done)->
 		@collector.requestFeed FakeRSS,(err,result)->
 			expect(err,err).to.be.null
 			expect(result,"result").to.exist
 			done()
+
 	it 'should be able to parse some Atom XML', (done)->
 		data = 
 			"""
@@ -69,4 +72,15 @@ describe 'A RSS collector', ->
 			expect(err).to.be.null
 			expect(result.title,"title").to.equal("Example Feed")
 			expect(result.entry[0].title).to.equal("Atom-Powered Robots Run Amok")
+			expect(result.entry[0].link).to.equal("http://example.org/2003/12/13/atom03")
 			done()
+
+	it 'should convert an atom entry link from attribute to element', ()->
+		entry = {
+			title:"abc"
+			link:{"$": {"href": "http://example.org/2003/12/13/atom03"}}
+		}
+		expect(@collector.parseEntry entry).to.eql {
+			title:"abc"
+			link:"http://example.org/2003/12/13/atom03"
+		} 

@@ -29,14 +29,14 @@ exports.createRSSCollector = ->
 				fun("Unable to parse feed",null)
 
 	parseAtom:(data)->
-		{
-			title:data.title
-			entry:_.flatten([data.entry])
-		}
+		title: data.title
+		entry: @parseEntry(e) for e in _.flatten([data.entry])
+
+	parseEntry:(e)->
+		title: e.title
+		link: e.link.$.href
 
 	parseRSS:(data)->
-		{
-			title:data.title
-			entry:_.flatten([data.item])
-		}
+		title: data.title
+		entry: _.flatten([data.item])
 
