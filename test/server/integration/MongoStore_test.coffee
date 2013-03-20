@@ -65,4 +65,11 @@ describe 'A mongodb store', ->
 				expect(result[0].state).to.equal "new"
 				done()
 
-
+	it 'should be able to change state', (done)->
+		@ms.insertEntry {"title":"An interesting tech story","link":"http://tech/story","id":"123456789"},(err,result)=>
+			throw err if err
+			@ms.updateEntryState "123456789","read",(err,result)=>
+				@ms.getEntries {"title":"An interesting tech story"},(err,result)->
+					expect(result[0].title).to.equal "An interesting tech story"
+					expect(result[0].state).to.equal "read"
+					done()

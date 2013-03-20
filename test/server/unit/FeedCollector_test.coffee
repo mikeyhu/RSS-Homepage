@@ -77,15 +77,16 @@ describe 'A Feed collector', ->
 			done()
 
 	it 'should convert an atom entry link from attribute to element', ()->
-		entry = {
+		entry = 
 			title:"abc"
 			link:{"$": {"href": "http://example.org/2003/12/13/atom03"}}
-		}
-		expect(@collector.parseEntry entry).to.eql {
+			id:"def"
+			
+		expect(@collector.parseEntry entry).to.eql
 			title:"abc"
 			link:"http://example.org/2003/12/13/atom03",
+			id:"def"
 			tags:[]
-		}
 
 	it 'should be able to retrieve a feed when provided with a Feed object', (done)->
 		fakeFeed = feed.createFeed(fakeRSS,["News"])

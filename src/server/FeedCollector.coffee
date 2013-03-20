@@ -46,9 +46,11 @@ exports.createFeedCollector = ->
 	parseEntry:(e)->
 		title: e.title
 		link: if e.link.$ then e.link.$.href else e.link
+		id: if e.guid then e.guid._ else e.id
 		tags: tags
 
 	parseRSS:(data)->
 		title: data.title
 		entry: @parseEntry(e) for e in _.flatten([data.item])
+
 

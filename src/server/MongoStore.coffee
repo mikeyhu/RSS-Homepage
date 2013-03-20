@@ -43,3 +43,9 @@ exports.createMongostore = (connectionString)->
 			else
 				collection.find(search).toArray fun
 
+	updateEntryState:(id,state,fun)->
+		@connect (err,collection)->
+			if err then fun err,null
+			else
+				collection.update {id:id},{$set:{state:state}},{w:1, upsert:true},fun
+
