@@ -4,6 +4,7 @@ _ = require 'underscore'
 
 exports.createFeedCollector = ->
 
+	#this means we'll need a different collector for each feed... should fix
 	tags = []
 
 	collectFeed:(feed,fun)->

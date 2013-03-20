@@ -6,3 +6,6 @@ block content
 		form(ng-submit="addFeed()")
 			input(type="text",ng-model="feedURL",size="30",placeholder="add new URL here")
 			input(class="btn-primary",type="submit",value="add")
+		each e in entries
+			p
+				a(href=e.link)= e.title

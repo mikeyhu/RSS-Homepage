@@ -6,10 +6,13 @@ store = require './MongoStore.coffee'
 
 connectionString = "mongodb://localhost:27017/feeds"
 
-sch = scheduler.createScheduler collector.createFeedCollector(),store.createMongostore(connectionString),15
+ms = store.createMongostore(connectionString)
 
-sch.scheduleFeed(feed.createFeed("http://feeds.bbci.co.uk/news/rss.xml",["News"]))
-sch.scheduleFeed(feed.createFeed("http://feeds.bbci.co.uk/sport/0/rss.xml?edition=uk",["Sport"]))
+s1 = scheduler.createScheduler collector.createFeedCollector(),ms,15
+s1.scheduleFeed(feed.createFeed("http://feeds.bbci.co.uk/news/rss.xml",["News"]))
+
+s2 = scheduler.createScheduler collector.createFeedCollector(),ms,15
+s2.scheduleFeed(feed.createFeed("http://feeds.bbci.co.uk/sport/0/rss.xml?edition=uk",["Sport"]))
 
 app = express()
 
@@ -20,7 +23,8 @@ app.set('view engine', 'jade')
 port = process.env.PORT or 5555
 
 app.get '/', (req, res)->
-	res.render('index',{})
+	ms.getEntries {}, (err,result)->
+		res.render('index',{entries:result})
 
 # Start Server
 app.listen port, -> console.log "Server is listening on #{port}\nPress CTRL-C to stop server."
