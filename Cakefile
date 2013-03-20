@@ -21,3 +21,8 @@ task "unit", "run unit tests", ->
     throw err if err
     console.log output
 
+task "package", "package clientside files", ->
+  exec "coffee --join src/resources/scripts/all.js --compile src/client/*.coffee", (err, output) ->
+    throw err if err
+    console.log output
+
