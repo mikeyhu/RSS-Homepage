@@ -4,9 +4,9 @@ _ = require 'underscore'
 
 exports.createFeedCollector = ->
 
-	requestFeed:(connectionString,fun)->
+	requestFeed:(URL,fun)->
 		data=""
-		http.get connectionString, (res) ->
+		http.get URL, (res) ->
 			res.setEncoding('utf8')
 			res.on 'data', (chunk)->
 				data=data+chunk
