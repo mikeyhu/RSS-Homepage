@@ -1,10 +1,10 @@
-exports.createScheduler = (collector,store,waitTime) ->
-
-	waitTime: waitTime ? 1000*60*15 #15 minutes
+exports.createScheduler = (collector,store,waitTime = 15) ->
 
 	scheduleFeed:(feed)->
-		@runFeed feed
-		setInterval @runFeed, waitTime,feed
+		finishFeed = (err,result)->
+			console.log("Finished scheduled run for '#{feed.URL}' at #{new Date().toJSON()}")
+		@runFeed feed,finishFeed
+		setInterval @runFeed, waitTime*1000*60,feed,finishFeed
 
 	runFeed:(feed,fun)->
 		collector.collectFeed feed,(err,result)->

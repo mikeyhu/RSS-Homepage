@@ -7,6 +7,7 @@ exports.createFeedCollector = ->
 	tags = []
 
 	collectFeed:(feed,fun)->
+		console.log "Collecting from '#{feed.URL}' at #{new Date().toJSON()}"
 		tags = feed.tags
 		@requestFeed feed.URL,(err,data)=>
 			if err then fun(err,null)
