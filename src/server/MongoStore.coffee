@@ -22,11 +22,20 @@ exports.createMongostore = (connectionString)->
 			else
 				collection.count fun
 
-	insert:(data,fun)->
+	insertEntries:(listOfEntries,fun,current=0,listOfResults=[])->
+		if listOfEntries.length <= current then fun(null,listOfResults)
+		else
+			@insertEntry listOfEntries[current],(err,result)=>
+				if err then fun(err,null)
+				else
+					listOfResults.push result
+					@insertEntries listOfEntries,fun,current+1,listOfResults
+
+	insertEntry:(entry,fun)->
 		@connect (err,collection)->
 			if err then fun err,null
 			else
-				collection.insert data,{w:1},fun
+				collection.update {title:entry.title}, {$set:entry},{w:1, upsert:true},fun
 
 	getEntries:(search,fun)->
 		@connect (err,collection)->
