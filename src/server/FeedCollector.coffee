@@ -4,6 +4,15 @@ _ = require 'underscore'
 
 exports.createFeedCollector = ->
 
+	tags = []
+
+	collectFeed:(feed,fun)->
+		tags = feed.tags
+		@requestFeed feed.URL,(err,data)=>
+			if err then fun(err,null)
+			else
+				@parseFeed data, fun
+
 	requestFeed:(URL,fun)->
 		data=""
 		http.get URL, (res) ->
@@ -34,9 +43,10 @@ exports.createFeedCollector = ->
 
 	parseEntry:(e)->
 		title: e.title
-		link: e.link.$.href
+		link: if e.link.$ then e.link.$.href else e.link
+		tags: tags
 
 	parseRSS:(data)->
 		title: data.title
-		entry: _.flatten([data.item])
+		entry: @parseEntry(e) for e in _.flatten([data.item])
 

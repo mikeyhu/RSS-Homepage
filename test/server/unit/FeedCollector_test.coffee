@@ -1,7 +1,8 @@
 collector = require '../../../src/server/FeedCollector.coffee'
+feed = require '../../../src/server/Feed.coffee'
 expect = (require 'chai').expect
 
-FakeRSS = "http://localhost:7777/rss.xml"
+fakeRSS = "http://localhost:7777/rss.xml"
 
 describe 'A Feed collector', ->
 	beforeEach () ->
@@ -40,7 +41,7 @@ describe 'A Feed collector', ->
 			done()
 
 	it 'should be able to retrieve and parse some RSS XML', (done)->
-		@collector.requestFeed FakeRSS,(err,result)->
+		@collector.requestFeed fakeRSS,(err,result)->
 			expect(err,err).to.be.null
 			expect(result,"result").to.exist
 			done()
@@ -82,5 +83,15 @@ describe 'A Feed collector', ->
 		}
 		expect(@collector.parseEntry entry).to.eql {
 			title:"abc"
-			link:"http://example.org/2003/12/13/atom03"
-		} 
+			link:"http://example.org/2003/12/13/atom03",
+			tags:[]
+		}
+
+	it 'should be able to retrieve a feed when provided with a Feed object', (done)->
+		fakeFeed = feed.createFeed(fakeRSS,["News"])
+		@collector.collectFeed fakeFeed,(err,result)->
+			expect(err).to.be.null
+			expect(result.title).to.equal "BBC News - Home"
+			expect(result.entry[0].title).to.equal "Cameron halts press regulation talks"
+			expect(result.entry[0].tags).to.eql ["News"]
+			done()
