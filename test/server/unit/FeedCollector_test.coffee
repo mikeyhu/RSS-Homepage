@@ -1,11 +1,11 @@
-collector = require '../../../src/server/RSSCollector.coffee'
+collector = require '../../../src/server/FeedCollector.coffee'
 expect = (require 'chai').expect
 
 FakeRSS = "http://localhost:7777/rss.xml"
 
-describe 'A RSS collector', ->
+describe 'A Feed collector', ->
 	beforeEach () ->
-		@collector = collector.createRSSCollector()
+		@collector = collector.createFeedCollector()
 
 	it 'should be able to parse an RSS Feed', (done)->
 		data = 

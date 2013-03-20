@@ -2,7 +2,7 @@ xml2js = require 'xml2js'
 http = require 'http'
 _ = require 'underscore'
 
-exports.createRSSCollector = ->
+exports.createFeedCollector = ->
 
 	requestFeed:(connectionString,fun)->
 		data=""
