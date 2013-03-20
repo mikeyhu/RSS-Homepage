@@ -35,7 +35,7 @@ exports.createMongostore = (connectionString)->
 		@connect (err,collection)->
 			if err then fun err,null
 			else
-				collection.update {title:entry.title}, {$set:entry},{w:1, upsert:true},fun
+				collection.update {title:entry.title}, {$setOnInsert:{state:"new"},$set:entry},{w:1, upsert:true},fun
 
 	getEntries:(search,fun)->
 		@connect (err,collection)->
