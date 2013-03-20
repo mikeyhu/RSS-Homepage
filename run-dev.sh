@@ -1,3 +1,3 @@
 ops/start-dev-mongodb.sh
-cake dev
+coffee src/server/WebServer.coffee
 ops/stop-dev-mongodb.sh

@@ -3,7 +3,7 @@
 REPORTER = "spec"
 
 task "dev", "run the server", ->
-  exec "coffee src/server/webserver.coffee"
+  exec "coffee src/server/WebServer.coffee"
   console.log "running server, use CTRL-c to quit"
 
 task "test", "run all tests", ->
