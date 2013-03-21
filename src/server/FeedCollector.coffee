@@ -1,6 +1,7 @@
 xml2js = require 'xml2js'
 http = require 'http'
 _ = require 'underscore'
+moment = require 'moment'
 
 exports.createFeedCollector = ->
 
@@ -47,6 +48,7 @@ exports.createFeedCollector = ->
 		title: e.title
 		link: if e.link.$ then e.link.$.href else e.link
 		id: if e.guid then e.guid._ else e.id
+		date: moment(e.pubDate ? e.updated).toJSON()
 		tags: tags
 
 	parseRSS:(data)->

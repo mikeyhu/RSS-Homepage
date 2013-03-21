@@ -26,5 +26,9 @@ app.get '/', (req, res)->
 	ms.getEntries {}, (err,result)->
 		res.render('index',{entries:result})
 
+app.get '/latest/json', (req,res)->
+	ms.getLatestNew 20, (err,result)->
+		res.json(result)
+
 # Start Server
 app.listen port, -> console.log "Server is listening on #{port}\nPress CTRL-C to stop server."

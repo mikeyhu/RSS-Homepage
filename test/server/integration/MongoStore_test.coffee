@@ -1,5 +1,6 @@
 mongostore = require '../../../src/server/MongoStore.coffee'
 expect = (require 'chai').expect
+moment = require 'moment'
 
 connectionString = "mongodb://localhost:27000/feeds"
 
@@ -12,6 +13,14 @@ similarData = [
 	{"title":"A news story","link":"http://a.news.story/","tag"}
 	{"title":"Third story","link":"http://third.news.story/"}
 	]
+
+entriesWithDates = [
+	{title : "an entry",id : "anEntry",link : "http://an",date : moment().subtract('days',2).toJSON()}
+	{title : "a newer entry",id : "aNewerEntry",link : "http://an",date : moment().subtract('days',1).toJSON()}
+	{title : "a older entry",id : "aOlderEntry",link : "http://an",date : moment().subtract('days',3).toJSON()}
+	]
+
+twentyEntries = ({title:"title #{num}",id:"id#{num}"} for num in [0...20])
 
 insertSome = (store,entries,finish)=>
 	store.insertEntries entries,(err,result)=>
@@ -84,3 +93,17 @@ describe 'A mongodb store', ->
 					expect(result[0].title).to.equal "An interesting tech story"
 					expect(result[0].state).to.equal "read"
 					done()
+
+	it 'should return items in order',(done)->
+		insertSome @ms,entriesWithDates,(result)=>
+			@ms.getLatestNew 10,(err,result)->
+				expect(result[0].title).to.equal "a newer entry"
+				expect(result[1].title).to.equal "an entry"
+				expect(result[2].title).to.equal "a older entry"
+				done()
+
+	it 'should only return a limited number of entries',(done)->
+		insertSome @ms,twentyEntries,(result)=>
+			@ms.getLatestNew 10,(err,result)->
+				expect(result.length).to.equal 10
+				done()

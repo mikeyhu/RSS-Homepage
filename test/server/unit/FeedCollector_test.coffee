@@ -80,12 +80,14 @@ describe 'A Feed collector', ->
 		entry = 
 			title:"abc"
 			link:{"$": {"href": "http://example.org/2003/12/13/atom03"}}
+			updated: "2013-03-21T16:09:59.852Z",
 			id:"def"
-			
+
 		expect(@collector.parseEntry entry).to.eql
 			title:"abc"
-			link:"http://example.org/2003/12/13/atom03",
+			link:"http://example.org/2003/12/13/atom03"
 			id:"def"
+			date: "2013-03-21T16:09:59.852Z"
 			tags:[]
 
 	it 'should be able to retrieve a feed when provided with a Feed object', (done)->
@@ -94,5 +96,6 @@ describe 'A Feed collector', ->
 			expect(err).to.be.null
 			expect(result.title).to.equal "BBC News - Home"
 			expect(result.entry[0].title).to.equal "Cameron halts press regulation talks"
+			expect(result.entry[0].date).to.equal "2013-03-14T19:55:45.000Z"
 			expect(result.entry[0].tags).to.eql ["News"]
 			done()

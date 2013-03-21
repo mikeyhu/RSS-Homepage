@@ -43,6 +43,12 @@ exports.createMongostore = (connectionString)->
 			else
 				collection.find(search).toArray fun
 
+	getLatestNew:(amount,fun)->
+		@connect (err,collection)->
+			if err then fun err,null
+			else
+				collection.find({state:"new"}).sort({date:-1}).limit(amount).toArray fun			
+
 	updateEntryState:(id,state,fun)->
 		@connect (err,collection)->
 			if err then fun err,null
