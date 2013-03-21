@@ -13,6 +13,21 @@ similarData = [
 	{"title":"Third story","link":"http://third.news.story/"}
 	]
 
+insertSome = (store,entries,finish)=>
+	store.insertEntries entries,(err,result)=>
+		throw err if err
+		finish result
+
+insertAn = (store,entry,finish)=>
+	store.insertEntry entry,(err,result)=>
+		throw err if err
+		finish result
+
+count = (store,finish)=>
+	store.count (err,result)=>
+		throw err if err
+		finish result
+
 describe 'A mongodb store', ->
 	beforeEach (done) ->
 		@ms = mongostore.createMongostore(connectionString)
@@ -29,7 +44,6 @@ describe 'A mongodb store', ->
 
 	it 'should be able to only insert documents that do not already exist', (done)->
 		@ms.insertEntries feedData,(err,result)=>
-			throw err if err
 			@ms.count (err,result)=>
 				throw err if err
 				expect(result).to.equal 2
@@ -49,13 +63,10 @@ describe 'A mongodb store', ->
 				done()
 
 	it 'should be able to upsert an entry and only add another if the title is different', (done)->
-		@ms.insertEntry {"title":"a new article", "link":"http://link/"},(err,result)=>
-			throw err if err
-			@ms.insertEntry {"title":"a new article", "link":"http://link/"},(err,result)=>
-				throw err if err
-				@ms.count (err,result)->
-					throw err if err
-					expect(result).to.equal 1
+		insertAn @ms, {"title":"a new article", "link":"http://link/"},(result)=>
+			insertAn @ms, {"title":"a new article", "link":"http://link/"},(result)=>
+				count @ms,(count)->
+					expect(count).to.equal 1
 					done()
 
 	it 'should insert data and add a state=new to it', (done)->
