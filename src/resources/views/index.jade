@@ -6,6 +6,13 @@ block content
 		form(ng-submit="addFeed()")
 			input(type="text",ng-model="feedURL",size="30",placeholder="add new URL here")
 			input(class="btn-primary",type="submit",value="add")
-		each e in entries
-			p
-				a(href=e.link)= e.title
+
+
+	.entries(ng-controller="EntryListCtrl")
+		.entry(ng-repeat="e in entries",ng-class-even="'even'",ng-class-odd="'odd'")
+			input(type="checkbox",ng-model="e.done")
+			a(href="{{e.link}}") 
+				h3 {{e.title}}
+			span{{e.date}}
+			p(class="toggle-{{e.done}}",ng-bind-html-unsafe="e.summary")
+

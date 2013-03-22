@@ -13,3 +13,14 @@ controller.FeedListCtrl = ($scope)->
     	$scope.feedURL = ''
 
     scope:$scope
+
+controller.EntryListCtrl = ($scope,$http)->
+
+	$scope.entries = []
+
+	$http.get("/latest/json")
+		.success (data,status)->
+			$scope.entries = data
+		.error (data,status)->
+
+	scope:$scope

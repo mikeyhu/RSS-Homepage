@@ -1,0 +1,51 @@
+@import "compass/reset";
+@import "compass/typography/links/link-colors";
+
+$border-color:#DDD;
+
+body {
+	font-size:12pt;
+}
+h3 {
+	font-size:120%;
+}
+
+.entries {
+	margin:1em;
+	width:600px;
+	border-top:1px solid $border-color;
+	border-left:1px solid $border-color;
+	border-right:1px solid $border-color;
+}
+
+.entry {
+	border-bottom: 1px solid $border-color;
+	padding:0.5em;
+}
+.entry span {
+	font-style:italic;
+	color : #CCC;
+}
+.entry p.toggle-,p.toggle-false {
+	margin:0px;
+	display:none;
+}
+.entry p.toggle-true {
+	margin:0px;
+}
+.entry input {
+	float:right;
+}
+.even {
+	background-color : #F6F6F6;
+}
+.odd {
+	background-color : #FAFAFA;
+}
+.entry h3 {
+	text-decoration:none;
+	margin:0px;
+}
+a	{
+	@include link-colors(#00c, #00c, #00c, #000)
+}
