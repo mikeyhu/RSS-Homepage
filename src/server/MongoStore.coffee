@@ -4,9 +4,12 @@ entryCollection = "entryData"
 
 exports.createMongostore = (connectionString)->
 
+	database = null
+
 	connect:(fun)->
 		mongoClient = mongo.MongoClient
-		mongoClient.connect connectionString,(err,db)->
+		mongoClient.connect connectionString,(err,db)=>
+			@database = db
 			fun err,null if err
 			fun null,db.collection(entryCollection) unless err
 
@@ -22,6 +25,11 @@ exports.createMongostore = (connectionString)->
 			else
 				collection.count fun
 
+	close:(fun)->(err,result)=>
+		if @database
+			@database.close()
+		fun(err,result)
+
 	insertEntries:(listOfEntries,fun,current=0,listOfResults=[])->
 		if listOfEntries.length <= current then fun(null,listOfResults)
 		else
@@ -32,10 +40,10 @@ exports.createMongostore = (connectionString)->
 					@insertEntries listOfEntries,fun,current+1,listOfResults
 
 	insertEntry:(entry,fun)->
-		@connect (err,collection)->
+		@connect (err,collection)=>
 			if err then fun err,null
 			else
-				collection.update {title:entry.title}, {$setOnInsert:{state:"new"},$set:entry},{w:1, upsert:true},fun
+				collection.update {id:entry.id}, {$setOnInsert:{state:"new"},$set:entry}, {w:1,upsert:true}, @close(fun)
 
 	getEntries:(search,fun)->
 		@connect (err,collection)->

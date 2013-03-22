@@ -49,6 +49,8 @@ exports.createFeedCollector = ->
 		link: if e.link.$ then e.link.$.href else e.link
 		id: if e.guid then e.guid._ else e.id
 		date: moment(e.pubDate ? e.updated).toJSON()
+		summary: e.summary ? e.description ? ''
+		#image: e['media:thumbnail'] ? ''
 		tags: tags
 
 	parseRSS:(data)->

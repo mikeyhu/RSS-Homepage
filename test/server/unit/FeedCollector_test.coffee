@@ -88,6 +88,8 @@ describe 'A Feed collector', ->
 			link:"http://example.org/2003/12/13/atom03"
 			id:"def"
 			date: "2013-03-21T16:09:59.852Z"
+			image:""
+			summary:""
 			tags:[]
 
 	it 'should be able to retrieve a feed when provided with a Feed object', (done)->

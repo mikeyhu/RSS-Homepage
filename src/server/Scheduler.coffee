@@ -1,4 +1,6 @@
-exports.createScheduler = (collector,store,waitTime = 15) ->
+store = require './MongoStore.coffee'
+
+exports.createScheduler = (collector,connectionString,waitTime = 15) ->
 
 	scheduleFeed:(feed)->
 		finishFeed = (err,result)->
@@ -8,12 +10,13 @@ exports.createScheduler = (collector,store,waitTime = 15) ->
 		setInterval @runFeed, waitTime*1000*60,feed,finishFeed
 
 	runFeed:(feed,fun)->
+		ms = store.createMongostore(connectionString)
 		collector.collectFeed feed,(err,result)->
 			if err 
 				logError err,feed
 				fun err,null
 			else
-				store.insertEntries result.entry,(err,result)->
+				ms.insertEntries result.entry,(err,result)->
 					if err then logError err,feed
 					fun(err,result)
 

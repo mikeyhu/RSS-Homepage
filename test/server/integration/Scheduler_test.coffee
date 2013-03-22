@@ -12,7 +12,7 @@ describe 'A scheduler', ->
 	beforeEach (done) ->
 		@ms = mongostore.createMongostore(connectionString)
 		@collector = collector.createFeedCollector()
-		@scheduler = scheduler.createScheduler @collector,@ms
+		@scheduler = scheduler.createScheduler @collector,connectionString
 		@ms.clear (err,result)->
 			done()
 
