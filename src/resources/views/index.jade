@@ -13,12 +13,12 @@ block content
 			div(class="btn-group btns-right")
 				a(class="btn",ng-click="e.open = !e.open",ng-init="e.open=false")
 					i(class="icon-{{plusMinus(e.open)}}")
-				a(class="btn")
+				a(class="btn",ng-click="remove($index)")
 					i(class="icon-trash")
-				a(class="btn")
-					i(class="icon-star-empty")
-			a(href="redirect?to={{encode(e.link)}}&id={{encode(e.id)}}") 
+				a(class="btn",ng-click="star($index)")
+					i(class="icon-star{{status(e.state)}}")
+			a(href="redirect?to={{encode(e.link)}}&id={{encode(e.id)}}",target="_new") 
 				h3 {{e.title}}
-			span{{e.date}}
+			span{{e.date | date:'medium'}}
 			p(class="toggle-{{e.open}}",ng-bind-html-unsafe="e.summary")
 

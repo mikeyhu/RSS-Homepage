@@ -55,7 +55,7 @@ exports.createMongostore = (connectionString)->
 		@connect (err,collection)->
 			if err then fun err,null
 			else
-				collection.find({state:"new"}).sort({date:-1}).limit(amount).toArray fun			
+				collection.find({$or: [{state:"new"},{state:"starred"}]}).sort({date:-1}).limit(amount).toArray fun			
 
 	updateEntryState:(id,state,fun)->
 		@connect (err,collection)->

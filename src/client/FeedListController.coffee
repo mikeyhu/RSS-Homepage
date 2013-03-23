@@ -14,19 +14,3 @@ controller.FeedListCtrl = ($scope)->
 
     scope:$scope
 
-controller.EntryListCtrl = ($scope,$http)->
-
-	$scope.entries = []
-
-	$http.get("/latest/json")
-		.success (data,status)->
-			$scope.entries = data
-		.error (data,status)->
-
-		$scope.plusMinus = (bool)->
-			if(bool) then "minus" else "plus"
-
-	$scope.encode = (url)->
-		encodeURIComponent url
-
-	scope:$scope
