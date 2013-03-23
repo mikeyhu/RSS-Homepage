@@ -5,14 +5,20 @@ block content
 			span{{l.url}}
 		form(ng-submit="addFeed()")
 			input(type="text",ng-model="feedURL",size="30",placeholder="add new URL here")
-			input(class="btn-primary",type="submit",value="add")
+			input(class="btn",type="submit",value="add")
 
 
 	.entries(ng-controller="EntryListCtrl")
 		.entry(ng-repeat="e in entries",ng-class-even="'even'",ng-class-odd="'odd'")
-			input(type="checkbox",ng-model="e.done")
-			a(href="{{e.link}}") 
+			div(class="btn-group btns-right")
+				a(class="btn",ng-click="e.open = !e.open",ng-init="e.open=false")
+					i(class="icon-{{plusMinus(e.open)}}")
+				a(class="btn")
+					i(class="icon-trash")
+				a(class="btn")
+					i(class="icon-star-empty")
+			a(href="redirect?to={{encode(e.link)}}&id={{encode(e.id)}}") 
 				h3 {{e.title}}
 			span{{e.date}}
-			p(class="toggle-{{e.done}}",ng-bind-html-unsafe="e.summary")
+			p(class="toggle-{{e.open}}",ng-bind-html-unsafe="e.summary")
 

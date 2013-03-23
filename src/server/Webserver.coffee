@@ -19,5 +19,12 @@ exports.createWebServer = (port,connectionString)->
 			else
 				res.json(result)
 
+	app.get '/redirect', (req,res)->
+		ms = store.createMongostore(connectionString)
+		ms.updateEntryState req.query.id,"read",(err,result)->
+			res.end(err) if err
+			res.redirect(req.query.to) unless err
+
+
 	# Start Server
 	app.listen port, -> console.log "Server is listening on #{port}\nPress CTRL-C to stop server."

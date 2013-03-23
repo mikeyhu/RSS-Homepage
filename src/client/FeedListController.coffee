@@ -23,4 +23,10 @@ controller.EntryListCtrl = ($scope,$http)->
 			$scope.entries = data
 		.error (data,status)->
 
+		$scope.plusMinus = (bool)->
+			if(bool) then "minus" else "plus"
+
+	$scope.encode = (url)->
+		encodeURIComponent url
+
 	scope:$scope
