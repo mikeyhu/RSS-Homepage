@@ -8,17 +8,28 @@ states = {
 
 controller.EntryListCtrl = ($scope,$http)->
 
+	$scope.tags = [
+		{name:"All"},
+		{name:"Technology"},
+		{name:"News"},
+		{name:"Sport"}
+	]
+	$scope.selectedTag = $scope.tags[0]
+
 	$scope.entries = []
-	if $http
-		$http.get("/latest/json")
-			.success (data,status)->
-				$scope.entries = data
-			.error (data,status)->
 
 	#internal functions
+	$scope.refreshEntries = ()->
+		if $http
+			url = if $scope.selectedTag.name=="All" then "/latest/json" else "/latestByTag/json?tag=" + $scope.selectedTag.name
+			$http.get(url)
+				.success (data,status)->
+					$scope.entries = data
+				.error (data,status)->
+
 	$scope.changeState = (entry,state)->
 		ignoreOutput = (data,status)->
-		
+
 		if $http
 			$http.get("/changeState?state=" + state + "&id=" + $scope.encode(entry.id))
 				.success(ignoreOutput)
@@ -48,5 +59,7 @@ controller.EntryListCtrl = ($scope,$http)->
 
 	$scope.status = (state)->
 		if state==states.STARRED then "" else "-empty" 
+
+	$scope.refreshEntries()
 
 	scope:$scope

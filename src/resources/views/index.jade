@@ -1,16 +1,8 @@
 extend layout
 block content
-	div(ng-controller="FeedListCtrl")
-		li(ng-repeat="l in listData")
-			span{{l.url}}
-		form(ng-submit="addFeed()")
-			input(type="text",ng-model="feedURL",size="30",placeholder="add new URL here")
-			input(class="btn",type="submit",value="add")
-
-
 	.entries(ng-controller="EntryListCtrl")
-		.entry
-			select(ng-model="selectedTag",ng-options="t.name for t in tags")
+		.entry Showing stories from: 
+			select(ng-model="selectedTag",ng-options="t.name for t in tags",ng-change="refreshEntries()")
 		.entry(ng-repeat="e in entries",ng-class-even="'even'",ng-class-odd="'odd'")
 			div(class="btn-group btns-right")
 				a(class="btn",ng-click="e.open = !e.open",ng-init="e.open=false")

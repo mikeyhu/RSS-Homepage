@@ -19,6 +19,14 @@ exports.createWebServer = (port,connectionString)->
 			else
 				res.json(result)
 
+	app.get '/latestByTag/json', (req,res)->
+		ms = store.createMongostore(connectionString)
+		ms.getLatestByTag req.query.tag,50, (err,result)->
+			ms.close()
+			if err then res.end(err)
+			else
+				res.json(result)
+
 	app.get '/redirect', (req,res)->
 		ms = store.createMongostore(connectionString)
 		ms.updateEntryState req.query.id,"read",(err,result)->
