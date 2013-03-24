@@ -46,26 +46,26 @@ exports.createMongostore = (connectionString)->
 				collection.update {id:entry.id}, {$setOnInsert:{state:"new"},$set:entry}, {w:1,upsert:true}, @close(fun)
 
 	getEntries:(search,fun)->
-		@connect (err,collection)->
+		@connect (err,collection)=>
 			if err then fun err,null
 			else
-				collection.find(search).toArray fun
+				collection.find(search).toArray @close(fun)
 
 	getLatestNew:(amount,fun)->
-		@connect (err,collection)->
+		@connect (err,collection)=>
 			if err then fun err,null
 			else
-				collection.find({$or: [{state:"new"},{state:"starred"}]}).sort({date:-1}).limit(amount).toArray fun			
+				collection.find({$or: [{state:"new"},{state:"starred"}]}).sort({date:-1}).limit(amount).toArray @close(fun)			
 
 	getLatestByTag:(tag,amount,fun)->
-		@connect (err,collection)->
+		@connect (err,collection)=>
 			if err then fun err,null
 			else
-				collection.find({$and: [{tags:tag},{$or: [{state:"new"},{state:"starred"}]}]}).sort({date:-1}).limit(amount).toArray fun	
+				collection.find({$and: [{tags:tag},{$or: [{state:"new"},{state:"starred"}]}]}).sort({date:-1}).limit(amount).toArray @close(fun)	
 
 	updateEntryState:(id,state,fun)->
-		@connect (err,collection)->
+		@connect (err,collection)=>
 			if err then fun err,null
 			else
-				collection.update {id:id},{$set:{state:state}},{w:1, upsert:true},fun
+				collection.update {id:id},{$set:{state:state}},{w:1, upsert:true},@close(fun)
 
