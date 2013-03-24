@@ -15,4 +15,19 @@ describe 'A EntryListCtrl controller', ->
 			{title:"c",id:"cc"}
 		]
 
+	it 'should be able to star entries in a list', ()->
+		c = new controller.EntryListCtrl({})
+		c.scope.entries = [
+			{title:"a",id:"aa",state:"new"},
+			{title:"b",id:"bb",state:"new"},
+			{title:"c",id:"cc",state:"new"}
+		]
+		c.scope.star(1)
+		expect(c.scope.entries).to.eql [
+			{title:"a",id:"aa",state:"new"},
+			{title:"b",id:"bb",state:"starred"},
+			{title:"c",id:"cc",state:"new"}
+		]
+
+
 

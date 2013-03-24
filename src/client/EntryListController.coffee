@@ -15,21 +15,21 @@ controller.EntryListCtrl = ($scope,$http)->
 				$scope.entries = data
 			.error (data,status)->
 
-	ignoreOutput = (data,status)->
+	#internal functions
+	$scope.changeState = (entry,state)->
+		ignoreOutput = (data,status)->
+		
+		if $http
+			$http.get("/changeState?state=" + state + "&id=" + $scope.encode(entry.id))
+				.success(ignoreOutput)
+				.error(ignoreOutput)
 
-	$scope.encode = (url)->
-		encodeURIComponent url
-
-	$scope.plusMinus = (open)->
-		if open then "minus" else "plus"
-
+	#events
 	$scope.remove = (index)->
 		entry = $scope.entries[index]
 		$scope.entries.splice index,1
-		if $http
-			$http.get("/changeState?state=" + states.ARCHIVED + "&id=" + $scope.encode(entry.id))
-				.success(ignoreOutput)
-				.error(ignoreOutput)
+		$scope.changeState entry,states.ARCHIVED
+
 
 	$scope.star = (index)->
 		entry = $scope.entries[index]
@@ -37,13 +37,16 @@ controller.EntryListCtrl = ($scope,$http)->
 			entry.state=states.NEW
 		else
 			entry.state=states.STARRED
-		if $http
-			$http.get("/changeState?state="+ entry.state + "&id=" + $scope.encode(entry.id))
-				.success(ignoreOutput)
-				.error(ignoreOutput)
+		$scope.changeState entry,entry.state
+
+	# Template helpers
+	$scope.encode = (url)->
+		encodeURIComponent url
+
+	$scope.plusMinus = (open)->
+		if open then "minus" else "plus"
 
 	$scope.status = (state)->
 		if state==states.STARRED then "" else "-empty" 
-
 
 	scope:$scope
