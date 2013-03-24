@@ -9,6 +9,8 @@ block content
 
 
 	.entries(ng-controller="EntryListCtrl")
+		.entry
+			select(ng-model="selectedTag",ng-options="t.name for t in tags")
 		.entry(ng-repeat="e in entries",ng-class-even="'even'",ng-class-odd="'odd'")
 			div(class="btn-group btns-right")
 				a(class="btn",ng-click="e.open = !e.open",ng-init="e.open=false")

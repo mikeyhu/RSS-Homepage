@@ -7,8 +7,8 @@ after = andAlso = require '../shared/Feed_steps.coffee'
 connectionString = "mongodb://localhost:27000/feeds"
 
 feedData = [
-	{"title":"A news story","link":"http://a.news.story/","tag","id":"1"}
-	{"title":"Another news story","link":"http://another.news.story/","id":"2"}
+	{"title":"A news story","link":"http://a.news.story/","tags":["Technology"],"id":"1"}
+	{"title":"Another news story","link":"http://another.news.story/","tags":["News"],"id":"2"}
 	]
 
 similarData = [
@@ -102,3 +102,10 @@ describe 'A mongodb store', ->
 					expect(result.length).to.equal 3
 					expect(result[0].title).to.equal "a newer entry"
 					done()
+
+	it 'should be able to limit results to certain tags',(done)->
+		after.insertingSome(feedData).intoThe @database,(result)=>
+			@database.getLatestByTag "News",10,(err,result)->
+				expect(result.length).to.equal 1
+				expect(result[0].title).to.equal "Another news story"
+				done()

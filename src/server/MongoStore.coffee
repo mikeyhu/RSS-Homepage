@@ -57,6 +57,12 @@ exports.createMongostore = (connectionString)->
 			else
 				collection.find({$or: [{state:"new"},{state:"starred"}]}).sort({date:-1}).limit(amount).toArray fun			
 
+	getLatestByTag:(tag,amount,fun)->
+		@connect (err,collection)->
+			if err then fun err,null
+			else
+				collection.find({$and: [{tags:tag},{$or: [{state:"new"},{state:"starred"}]}]}).sort({date:-1}).limit(amount).toArray fun	
+
 	updateEntryState:(id,state,fun)->
 		@connect (err,collection)->
 			if err then fun err,null
