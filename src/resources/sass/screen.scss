@@ -1,5 +1,6 @@
 @import "compass/reset";
-@import "compass_twitter_bootstrap";	
+@import "compass_twitter_bootstrap";
+@import "compass_twitter_bootstrap_responsive";	
 @import "compass/typography/links/link-colors";
 
 $border-color:#DDD;
@@ -7,16 +8,12 @@ $border-color:#DDD;
 body {
 	font-size:12pt;
 }
-h3 {
-	font-size:120%;
-}
-
 .entries {
-	margin:1em;
-	width:600px;
+	margin:0em;
 	border-top:1px solid $border-color;
 	border-left:1px solid $border-color;
 	border-right:1px solid $border-color;
+	width:600px;
 }
 .entry {
 	border-bottom: 1px solid $border-color;
@@ -26,11 +23,17 @@ h3 {
 	font-style:italic;
 	color : #CCC;
 }
-.entry p.toggle-,p.toggle-false {
-	margin:0px;
+.entry p {
+	margin:0px;	
+}
+.entry p.toggle-false {
 	display:none;
 }
 .entry p.toggle-true {
+}
+.entry h3 {
+	font-size:120%;
+	text-decoration:none;
 	margin:0px;
 }
 .btns-right {
@@ -42,10 +45,12 @@ h3 {
 .odd {
 	background-color : #FAFAFA;
 }
-.entry h3 {
-	text-decoration:none;
-	margin:0px;
-}
 a	{
 	@include link-colors(#00c, #00c, #00c, #000)
+}
+@media screen and (max-device-width: 600px), screen and (max-width: 600px) {
+	.entries {
+		background-color:#777;
+		width:100%;
+	}
 }
