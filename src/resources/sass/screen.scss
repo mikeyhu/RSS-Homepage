@@ -48,9 +48,8 @@ body {
 a	{
 	@include link-colors(#00c, #00c, #00c, #000)
 }
-@media screen and (max-device-width: 600px), screen and (max-width: 600px) {
+@media screen and (max-device-width: 800px), screen and (max-width: 800px) {
 	.entries {
-		background-color:#777;
 		width:100%;
 	}
 }
