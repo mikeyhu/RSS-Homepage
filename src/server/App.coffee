@@ -1,4 +1,4 @@
-webserver = require './WebServer.coffee'
+webserver = require './Webserver.coffee'
 scheduler = require './Scheduler.coffee'
 collector = require './FeedCollector.coffee'
 feed = require './Feed.coffee'

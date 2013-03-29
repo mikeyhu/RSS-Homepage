@@ -1,4 +1,4 @@
-webserver = require '../../../src/server/WebServer.coffee'
+webserver = require '../../../src/server/Webserver.coffee'
 mongostore = require '../../../src/server/MongoStore.coffee'
 http = require 'http'
 expect = (require 'chai').expect

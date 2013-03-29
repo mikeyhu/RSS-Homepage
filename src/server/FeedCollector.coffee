@@ -18,7 +18,7 @@ exports.createFeedCollector = ->
 
 	requestFeed:(URL,fun)->
 		data=""
-		http.get URL, (res) ->
+		req = http.get URL, (res) ->
 			res.setEncoding('utf8')
 			res.on 'data', (chunk)->
 				data=data+chunk
@@ -27,6 +27,7 @@ exports.createFeedCollector = ->
 		.on 'error', (e)->	
 			console.log("Got error: " + e.message)
 			fun(e.message,null)
+		req.end()
 
 	parseFeed:(data,fun) ->
 		parser = new xml2js.Parser({explicitArray:false})
