@@ -1,5 +1,6 @@
 xml2js = require 'xml2js'
 http = require 'http'
+url = require 'url'
 _ = require 'underscore'
 moment = require 'moment'
 
@@ -17,8 +18,9 @@ exports.createFeedCollector = ->
 				@parseFeed data, fun
 
 	requestFeed:(URL,fun)->
+		options = url.parse(URL)
 		data=""
-		req = http.get URL, (res) ->
+		req = http.request options, (res) ->
 			res.setEncoding('utf8')
 			res.on 'data', (chunk)->
 				data=data+chunk

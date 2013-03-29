@@ -15,8 +15,8 @@ schedule = (feed)->
 
 feeds = [
 	feed.createFeed("http://feeds.bbci.co.uk/news/rss.xml",["News"]),
-	feed.createFeed("http://feeds.bbci.co.uk/sport/0/rss.xml?edition=uk",["Sport"]),
-	feed.createFeed("http://feeds.macrumors.com/MacRumors-All?format=xml",["Technology"])
+	feed.createFeed("http://feeds.macrumors.com/MacRumors-All?format=xml",["Technology"]),
+	feed.createFeed("http://www.theverge.com/rss/index.xml",["Technology"])
 ]
 
 schedule f for f in feeds
