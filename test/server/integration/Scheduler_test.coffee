@@ -11,8 +11,7 @@ fakeRSS = "http://localhost:7777/rss.xml"
 describe 'A scheduler', ->
 	beforeEach (done) ->
 		@ms = mongostore.createMongostore(connectionString)
-		@collector = collector.createFeedCollector()
-		@scheduler = scheduler.createScheduler @collector,connectionString
+		@scheduler = scheduler.createScheduler connectionString
 		@ms.clear (err,result)->
 			done()
 

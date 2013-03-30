@@ -1,6 +1,5 @@
 webserver = require './Webserver.coffee'
 scheduler = require './Scheduler.coffee'
-collector = require './FeedCollector.coffee'
 feed = require './Feed.coffee'
 store = require './MongoStore.coffee'
 
@@ -9,7 +8,7 @@ connectionString = "mongodb://localhost:27017/feeds"
 
 
 schedule = (feed)->
-	sc = scheduler.createScheduler collector.createFeedCollector(),connectionString,15
+	sc = scheduler.createScheduler connectionString,15
 	sc.scheduleFeed(feed)
 
 

@@ -4,14 +4,10 @@ url = require 'url'
 _ = require 'underscore'
 moment = require 'moment'
 
-exports.createFeedCollector = ->
+exports.createFeedCollector = (feed)->
 
-	#this means we'll need a different collector for each feed... should fix
-	tags = []
-
-	collectFeed:(feed,fun)->
+	collectFeed:(fun)->
 		console.log "Collecting from '#{feed.URL}' at #{new Date().toJSON()}"
-		tags = feed.tags
 		@requestFeed feed.URL,(err,data)=>
 			if err then fun(err,null)
 			else
@@ -45,19 +41,20 @@ exports.createFeedCollector = ->
 
 	parseAtom:(data)->
 		title: data.title
-		entry: @parseEntry(e) for e in _.flatten([data.entry])
+		entry: @parseEntry(e,data.title) for e in _.flatten([data.entry])
 
-	parseEntry:(e)->
+	parseEntry:(e,feedName)->
 		title: e.title
 		link: if e.link.$ then e.link.$.href else e.link
 		id: if e.guid then e.guid._ else e.id
 		date: moment(e.pubDate ? e.updated).toJSON()
 		summary: e.summary ? e.description ? ''
 		#image: e['media:thumbnail'] ? ''
-		tags: tags
+		tags: feed?.tags
+		feedName: feedName ? ''
 
 	parseRSS:(data)->
 		title: data.title
-		entry: @parseEntry(e) for e in _.flatten([data.item])
+		entry: @parseEntry(e,data.title) for e in _.flatten([data.item])
 
 

@@ -20,8 +20,10 @@ body {
 	padding:0.5em;
 }
 .entry span {
+	display: block;
 	font-style:italic;
-	color : #CCC;
+	color : #888;
+	margin-bottom:1em;
 }
 .entry p {
 	margin:0px;	
@@ -49,7 +51,7 @@ a	{
 	@include link-colors(#00c, #00c, #00c, #000)
 }
 @media screen and (max-device-width: 800px), screen and (max-width: 800px) {
-	.entries {
+	.entries {   
 		width:100%;
 	}
 }

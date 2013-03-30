@@ -5,8 +5,6 @@ expect = (require 'chai').expect
 fakeRSS = "http://localhost:7777/rss.xml"
 
 describe 'A Feed collector', ->
-	beforeEach () ->
-		@collector = collector.createFeedCollector()
 
 	it 'should be able to parse an RSS Feed', (done)->
 		data = 
@@ -33,7 +31,8 @@ describe 'A Feed collector', ->
 			  </channel> 
 			</rss>
 			"""
-		@collector.parseFeed data,(err,result)->
+		fc = collector.createFeedCollector()
+		fc.parseFeed data,(err,result)->
 			expect(err).to.be.null
 			expect(result.title,"title").to.equal("BBC News - Home")
 			expect(result.entry[0].title).to.equal("Cameron halts press regulation talks")
@@ -41,7 +40,8 @@ describe 'A Feed collector', ->
 			done()
 
 	it 'should be able to retrieve and parse some RSS XML', (done)->
-		@collector.requestFeed fakeRSS,(err,result)->
+		fc = collector.createFeedCollector()
+		fc.requestFeed fakeRSS,(err,result)->
 			expect(err,err).to.be.null
 			expect(result,"result").to.exist
 			done()
@@ -69,32 +69,36 @@ describe 'A Feed collector', ->
 	        	</entry>
 			</feed>
 			"""
-		@collector.parseFeed data,(err,result)->
+		fc = collector.createFeedCollector()
+		fc.parseFeed data,(err,result)->
 			expect(err).to.be.null
 			expect(result.title,"title").to.equal("Example Feed")
 			expect(result.entry[0].title).to.equal("Atom-Powered Robots Run Amok")
 			expect(result.entry[0].link).to.equal("http://example.org/2003/12/13/atom03")
+			expect(result.entry[0].feedName).to.equal("Example Feed")
 			done()
 
 	it 'should convert an atom entry link from attribute to element', ()->
+		fc = collector.createFeedCollector(feed.createFeed(fakeRSS,["News"]))
 		entry = 
 			title:"abc"
 			link:{"$": {"href": "http://example.org/2003/12/13/atom03"}}
 			updated: "2013-03-21T16:09:59.852Z",
 			id:"def"
 
-		expect(@collector.parseEntry entry).to.eql
+		expect(fc.parseEntry entry).to.eql
 			title:"abc"
 			link:"http://example.org/2003/12/13/atom03"
 			id:"def"
 			date: "2013-03-21T16:09:59.852Z"
 #			image:""
 			summary:""
-			tags:[]
+			tags:["News"]
+			feedName:""
 
 	it 'should be able to retrieve a feed when provided with a Feed object', (done)->
-		fakeFeed = feed.createFeed(fakeRSS,["News"])
-		@collector.collectFeed fakeFeed,(err,result)->
+		fc = collector.createFeedCollector(feed.createFeed(fakeRSS,["News"]))
+		fc.collectFeed (err,result)->
 			expect(err).to.be.null
 			expect(result.title).to.equal "BBC News - Home"
 			expect(result.entry[0].title).to.equal "Cameron halts press regulation talks"

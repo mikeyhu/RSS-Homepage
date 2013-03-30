@@ -1,6 +1,8 @@
 store = require './MongoStore.coffee'
+collector = require './FeedCollector.coffee'
 
-exports.createScheduler = (collector,connectionString,waitTime = 15) ->
+
+exports.createScheduler = (connectionString,waitTime = 15) ->
 
 	scheduleFeed:(feed)->
 		finishFeed = (err,result)->
@@ -11,7 +13,8 @@ exports.createScheduler = (collector,connectionString,waitTime = 15) ->
 
 	runFeed:(feed,fun)->
 		ms = store.createMongostore(connectionString)
-		collector.collectFeed feed,(err,result)->
+		feedCollector = collector.createFeedCollector feed
+		feedCollector.collectFeed (err,result)->
 			if err 
 				logError err,feed
 				fun err,null

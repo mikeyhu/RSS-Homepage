@@ -7,10 +7,14 @@ block content
 			div(class="btn-group btns-right")
 				a(class="btn",ng-click="e.open = !e.open",ng-init="e.open=false")
 					i(class="icon-{{plusMinus(e.open)}}")
+					|  More
 				a(class="btn",ng-click="remove($index)")
 					i(class="icon-trash")
+					|  Archive
 				a(class="btn",ng-click="star($index)")
 					i(class="icon-star{{status(e.state)}}")
+					|  Star
+			span{{e.feedName}}
 			a(href="redirect?to={{encode(e.link)}}&id={{encode(e.id)}}",target="_new") 
 				h3 {{e.title}}
 			span{{e.date | date:'medium'}}
