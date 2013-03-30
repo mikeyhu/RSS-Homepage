@@ -14,7 +14,7 @@ exports.createFeedCollector = (feed)->
 				@parseFeed data, fun
 
 	requestFeed:(URL,fun)->
-		options = url.parse(URL)
+		options = url.parse(URL,true)
 		data=""
 		req = http.request options, (res) ->
 			res.setEncoding('utf8')
