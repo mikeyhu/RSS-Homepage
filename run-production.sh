@@ -1,1 +1,1 @@
-nohup coffee src/server/App.coffee  > production/log/server.log 2>&1 &
+nohup coffee src/server/App.coffee  >> production/log/server.log 2>&1 &
