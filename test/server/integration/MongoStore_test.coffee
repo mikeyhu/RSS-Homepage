@@ -89,7 +89,6 @@ describe 'A mongodb store', ->
 					expect(result[0].title).to.equal "a older entry"
 					done()
 
-
 	it 'should return items in order',(done)->
 		after.insertingSome(entriesWithDates).intoThe @database,(result)=>
 			@database.getLatestNew 10,(err,result)->

@@ -25,6 +25,7 @@ exports.createFeedstore = (connectionString)->
 		fun(err,result)
 
 	insertFeed:(feed,fun)->
+		console.log feed
 		@connect (err,collection)=>
 			if err then fun err,null
 			else
