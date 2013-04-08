@@ -32,9 +32,9 @@ exports.createFeedCollector = (feed)->
 		parser.parseString data, (err,result)=>
 			if err
 				fun(err,null)
-			else if result.rss
+			else if result?.rss
 				fun(null,@parseRSS result.rss.channel)
-			else if result.feed
+			else if result?.feed
 				fun(null,@parseAtom result.feed)
 			else
 				fun("Unable to parse feed",null)
