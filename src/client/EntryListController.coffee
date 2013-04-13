@@ -35,6 +35,9 @@ controller.EntryListCtrl = ($scope,$http)->
 				.success(ignoreOutput)
 				.error(ignoreOutput)
 
+	$scope.findNew = ()->
+		entry for entry in $scope.entries when entry.state==states.NEW
+
 	#events
 	$scope.remove = (index)->
 		entry = $scope.entries[index]
@@ -49,6 +52,21 @@ controller.EntryListCtrl = ($scope,$http)->
 		else
 			entry.state=states.STARRED
 		$scope.changeState entry,entry.state
+
+	$scope.read = (index)->
+		$scope.entries.splice index,1
+		true
+
+
+	$scope.archiveAllNew = ()->
+		newIds = (entry.id for entry in $scope.findNew())
+		console.log newIds
+		if $http
+			$http.post("/changeMultipleStates?state=#{states.ARCHIVED}",newIds)
+				.success (data,status)->
+					$scope.refreshEntries()
+				.error (data,status)->
+
 
 	# Template helpers
 	$scope.encode = (url)->

@@ -1,6 +1,7 @@
 webserver = require '../../../src/server/Webserver.coffee'
 mongostore = require '../../../src/server/MongoStore.coffee'
 http = require 'http'
+urlparser = require 'url'
 expect = (require 'chai').expect
 moment = require 'moment'
 
@@ -29,25 +30,62 @@ requestingSomeJSONFrom=(URL,fun)->
 		console.log("Got error: " + e.message)
 		fun(e.message,null)
 
+postingSomeJSON=(URL,input,fun)->
+
+	inputString = JSON.stringify(input)
+	headers = {
+		'Content-Type': 'application/json',
+		'Content-Length': inputString.length
+	}
+
+	options = urlparser.parse(URL,true)
+	options.method = "POST"
+	options.headers = headers
+	data=""
+	req = http.request options, (res) ->
+		res.setEncoding('utf8')
+		res.on 'data', (chunk)->
+			data=data+chunk
+		res.on 'end', ()->
+			fun(null,data)
+	.on 'error', (e)->  
+		console.log("Got error: " + e.message)
+		fun(e.message,null)
+	req.write inputString
+	req.end()
+
 
 describe 'Requesting the latest entries', () ->
-  	before (done) ->
-  		after.insertingSome(twentyEntries).intoThe database,(err,result)->
-  			done()
+		before (done) ->
+			after.insertingSome(twentyEntries).intoThe database,(err,result)->
+				done()
 
-  	it 'should return JSON of them', (done) ->
-  		requestingSomeJSONFrom url + "latest/json",(err,data)->
-  			expect(data[0].title).to.equal "title 19"
-  			expect(data.length).to.equal 20
-  			done()
+		it 'should return JSON of them', (done) ->
+			requestingSomeJSONFrom url + "latest/json",(err,data)->
+				expect(data[0].title).to.equal "title 19"
+				expect(data.length).to.equal 20
+				done()
 
 describe 'Requesting the latest entries by tag', () ->
-  	before (done) ->
-  		after.insertingSome(twentyEntries).intoThe database,(err,result)->
-  			done()
+		before (done) ->
+			after.insertingSome(twentyEntries).intoThe database,(err,result)->
+				done()
 
-  	it 'should return JSON of them', (done) ->
-  		requestingSomeJSONFrom url + "latestByTag/json?tag=News",(err,data)->
-  			expect(data[0].title).to.equal "title 9"
-  			expect(data.length).to.equal 10
-  			done()
+		it 'should return JSON of them', (done) ->
+			requestingSomeJSONFrom url + "latestByTag/json?tag=News",(err,data)->
+				expect(data[0].title).to.equal "title 9"
+				expect(data.length).to.equal 10
+				done()
+
+describe 'Updating multiple entries',(done)->
+		before (done)->
+			after.clearingDataFromThe database,(result)->
+				after.insertingSome(twentyEntries).intoThe database,(err,result)->
+					done()
+
+		it 'should return the JSON of only new entries', (done)->
+			postingSomeJSON url + "changeMultipleStates?state=archived",["id1","id2","id3"],(err,result)->
+				throw err if err
+				requestingSomeJSONFrom url + "latest/json",(err,data)->
+					expect(data.length).to.equal 17
+					done()

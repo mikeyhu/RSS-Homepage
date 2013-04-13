@@ -40,6 +40,18 @@
         return $http.get("/changeState?state=" + state + "&id=" + $scope.encode(entry.id)).success(ignoreOutput).error(ignoreOutput);
       }
     };
+    $scope.findNew = function() {
+      var entry, _i, _len, _ref, _results;
+      _ref = $scope.entries;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        entry = _ref[_i];
+        if (entry.state === states.NEW) {
+          _results.push(entry);
+        }
+      }
+      return _results;
+    };
     $scope.remove = function(index) {
       var entry;
       entry = $scope.entries[index];
@@ -55,6 +67,29 @@
         entry.state = states.STARRED;
       }
       return $scope.changeState(entry, entry.state);
+    };
+    $scope.read = function(index) {
+      $scope.entries.splice(index, 1);
+      return true;
+    };
+    $scope.archiveAllNew = function() {
+      var entry, newIds;
+      newIds = (function() {
+        var _i, _len, _ref, _results;
+        _ref = $scope.findNew();
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          entry = _ref[_i];
+          _results.push(entry.id);
+        }
+        return _results;
+      })();
+      console.log(newIds);
+      if ($http) {
+        return $http.post("/changeMultipleStates?state=" + states.ARCHIVED, newIds).success(function(data, status) {
+          return $scope.refreshEntries();
+        }).error(function(data, status) {});
+      }
     };
     $scope.encode = function(url) {
       return encodeURIComponent(url);

@@ -5,6 +5,7 @@ exports.createWebServer = (port,connectionString)->
 	
 	app = express()
 	app.use express.static(process.cwd() + '/src/resources/')
+	app.use express.bodyParser()
 	app.set('views', __dirname + '/../resources/views')
 	app.set('view engine', 'jade')
 
@@ -36,6 +37,13 @@ exports.createWebServer = (port,connectionString)->
 	app.get '/changeState', (req,res)->
 		ms = store.createMongostore(connectionString)
 		ms.updateEntryState req.query.id,req.query.state,(err,result)->
+			res.end(err) if err
+			res.end() unless err
+
+	app.post '/changeMultipleStates', (req,res)->
+		ms = store.createMongostore(connectionString)
+		console.log "REQUEST:" + JSON.stringify(req.body)
+		ms.updateEntryStates req.body,req.query.state,(err,result)->
 			res.end(err) if err
 			res.end() unless err
 

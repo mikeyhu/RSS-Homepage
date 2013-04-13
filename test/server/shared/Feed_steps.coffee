@@ -14,3 +14,8 @@ exports.countingEntriesInThe = (store,finish)=>
 	store.count (err,result)=>
 		throw err if err
 		finish result
+
+exports.clearingDataFromThe = (store,finish)=>
+	store.clear (err,result)=>
+		throw err if err
+		finish result

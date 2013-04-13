@@ -29,5 +29,18 @@ describe 'A EntryListCtrl controller', ->
 			{title:"c",id:"cc",state:"new"}
 		]
 
+	it 'should be able to find unstarred entries in a list', ()->
+		c = new controller.EntryListCtrl({})
+		c.scope.entries = [
+			{title:"a",id:"aa",state:"new"},
+			{title:"b",id:"bb",state:"starred"},
+			{title:"c",id:"cc",state:"new"}
+		]
+		
+		expect(c.scope.findNew()).to.eql [
+			{title:"a",id:"aa",state:"new"},
+			{title:"c",id:"cc",state:"new"}
+		]
+
 
 

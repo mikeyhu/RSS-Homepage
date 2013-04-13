@@ -15,8 +15,12 @@ block content
 					i(class="icon-star{{status(e.state)}}")
 					|  Star
 			span{{e.feedName}}
-			a(href="redirect?to={{encode(e.link)}}&id={{encode(e.id)}}",target="_new") 
+			a(href="redirect?to={{encode(e.link)}}&id={{encode(e.id)}}",target="_new",ng-click="read($index)") 
 				h3 {{e.title}}
 			span{{e.date | date:'medium'}}
 			p(class="toggle-{{e.open}}",ng-bind-html-unsafe="e.summary")
+		.entry
+			a(class="btn",ng-click="archiveAllNew()")
+				i(class="icon-trash")
+				| Archive all unstarred
 
