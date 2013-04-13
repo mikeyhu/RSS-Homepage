@@ -25,14 +25,5 @@
       <media:thumbnail width="66" height="49" url="http://news.bbcimg.co.uk/media/images/66397000/jpg/_66397155_comp_clegg_mili_cam.jpg"/>  
       <media:thumbnail width="144" height="81" url="http://news.bbcimg.co.uk/media/images/66397000/jpg/_66397156_comp_clegg_mili_cam.jpg"/> 
     </item>  
-    <item> 
-      <title>Pope sounds warning to Catholics</title>  
-      <description>Newly elected Pope Francis warns that the Catholic Church will be just "a compassionate NGO" unless it focuses on its primary, religious mission.</description>  
-      <link>http://www.bbc.co.uk/news/world-europe-21793224#sa-ns_mchannel=rss&amp;ns_source=PublicRSS20-sa</link>  
-      <guid isPermaLink="false">http://www.bbc.co.uk/news/world-europe-21793224</guid>  
-      <pubDate>Thu, 14 Mar 2013 17:51:01 GMT</pubDate>  
-      <media:thumbnail width="66" height="49" url="http://news.bbcimg.co.uk/media/images/66399000/jpg/_66399349_66397422.jpg"/>  
-      <media:thumbnail width="144" height="81" url="http://news.bbcimg.co.uk/media/images/66399000/jpg/_66399966_66397422.jpg"/> 
-    </item>  
   </channel> 
 </rss>

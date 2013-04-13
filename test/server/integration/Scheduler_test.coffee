@@ -21,7 +21,7 @@ describe 'A scheduler', ->
 			throw err if err
 			@ms.count (err,result)->
 				throw err if err
-				expect(result).to.equal 2
+				expect(result).to.equal 1
 				done()
 
 	it 'should be able to insert feed data into a store and find it again', (done)->
@@ -30,7 +30,7 @@ describe 'A scheduler', ->
 			throw err if err
 			@ms.getEntries {"tags":"News"},(err,result)->
 				throw err if err
-				expect(result.length).to.equal 2
+				expect(result.length).to.equal 1
 				expect(result[0].title).to.equal "Cameron halts press regulation talks"
 				expect(result[0].tags).to.eql ["News"]
 				done()
