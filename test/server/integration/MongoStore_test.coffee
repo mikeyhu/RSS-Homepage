@@ -81,6 +81,15 @@ describe 'A mongodb store', ->
 					expect(result[0].state).to.equal "read"
 					done()
 
+	it 'should be able to change states of multiple items', (done)->
+		after.insertingSome(entriesWithDates).intoThe @database,(result)=>
+			@database.updateEntryStates ["anEntry","aNewerEntry"],"archived",(err,result)=>
+				@database.getLatestNew 10, (err,result)->
+					expect(result.length).to.equal 1
+					expect(result[0].title).to.equal "a older entry"
+					done()
+
+
 	it 'should return items in order',(done)->
 		after.insertingSome(entriesWithDates).intoThe @database,(result)=>
 			@database.getLatestNew 10,(err,result)->
