@@ -47,9 +47,9 @@ body {
 .odd {
 	background-color : #FAFAFA;
 }
-a	{
+/*a	{
 	@include link-colors(#00c, #00c, #00c, #000)
-}
+}*/
 @media screen and (max-device-width: 800px), screen and (max-width: 800px) {
 	.entries {   
 		width:100%;

@@ -1,8 +1,13 @@
 extend layout
 block content
 	.entries(ng-controller="EntryListCtrl")
-		.entry Showing stories from: 
+		.entry
+			div(class="btn-group btns-right")
+				a(class="btn btn-primary",ng-click="refreshEntries()")
+					i(class="icon-refresh icon-white")
+			| Showing stories from: 
 			select(ng-model="selectedTag",ng-options="t.name for t in tags",ng-change="refreshEntries()")
+
 		.entry(ng-repeat="e in entries",ng-class-even="'even'",ng-class-odd="'odd'")
 			div(class="btn-group btns-right")
 				a(class="btn",ng-click="e.open = !e.open",ng-init="e.open=false")
@@ -20,7 +25,11 @@ block content
 			span{{e.date | date:'medium'}}
 			p(class="toggle-{{e.open}}",ng-bind-html-unsafe="e.summary")
 		.entry
-			a(class="btn",ng-click="archiveAllNew()")
-				i(class="icon-trash")
-				| Archive all unstarred
+			div(class="btn-group")
+				a(class="btn btn-primary",ng-click="archiveAllNew()")
+					i(class="icon-trash icon-white")
+					|  Archive all unstarred
+				a(class="btn btn-primary",ng-click="more()")
+					i(class="icon-repeat icon-white")
+					|  More articles
 
