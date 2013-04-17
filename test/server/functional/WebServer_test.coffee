@@ -130,3 +130,17 @@ describe 'Removing a feed', (done)->
 					requestingSomeJSONFrom url + "feeds/json",(err,data)->
 						expect(data.length).to.equal 0
 						done()
+
+describe 'Requesting a list of tags', (done)->
+	before (done)->
+		feeds = [
+			{URL: "http://feeds.bbci.co.uk/news/rss.xml",tags:["News"]},
+			{URL: "http://www.theverge.com/rss/index.xml",tags:["Technology"]}
+		]
+		after.addingSomeFeeds(feeds).intoThe feedsDB,(err,result)->
+			done()
+
+	it 'should return JSON of them', (done)->
+		requestingSomeJSONFrom url + "tags/json",(err,data)->
+			expect(data).to.eql ["News","Technology"]
+			done()

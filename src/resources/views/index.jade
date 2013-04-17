@@ -6,7 +6,7 @@ block content
 				a(class="btn btn-primary",ng-click="refreshEntries()")
 					i(class="icon-refresh icon-white")
 			| Showing stories from: 
-			select(ng-model="selectedTag",ng-options="t.name for t in tags",ng-change="refreshEntries()")
+			select(ng-model="selectedTag",ng-options="t as t.name group by t.group for t in tags",ng-change="refreshEntries()")
 
 		.entry(ng-repeat="e in entries",ng-class-even="'even'",ng-class-odd="'odd'")
 			div(class="btn-group btns-right")

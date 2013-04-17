@@ -79,5 +79,14 @@ exports.createWebServer = (port,connectionString)->
 			res.end(err) if err
 			res.end() unless err
 
+	app.get '/tags/json', (req,res)->
+		fs = feedstore.createFeedstore(connectionString)
+		fs.getTags (err,result)->
+			fs.close()
+			if err then res.end(err)
+			else
+				res.json(result)
+
+
 	# Start Server
 	app.listen port, -> console.log "Server is listening on #{port}\nPress CTRL-C to stop server."

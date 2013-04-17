@@ -9,19 +9,23 @@ states = {
 controller.EntryListCtrl = ($scope,$http)->
 
 	$scope.tags = [
-		{name:"All"},
-		{name:"Technology"},
-		{name:"News"},
-		{name:"Sport"}
+		{group:"Types",name:"All",url:"/latest/json"}
 	]
 	$scope.selectedTag = $scope.tags[0]
+
+	$scope.getTags = ()->
+		if $http
+			$http.get("/tags/json")
+				.success (data,status)->
+					tags = ( {group:"Tags",name:t} for t in data)
+					$scope.tags = $scope.tags.concat(tags)
 
 	$scope.entries = []
 
 	#internal functions
 	$scope.refreshEntries = ()->
 		if $http
-			url = if $scope.selectedTag.name=="All" then "/latest/json" else "/latestByTag/json?tag=" + $scope.selectedTag.name
+			url = if $scope.selectedTag.group=="Types" then $scope.selectedTag.url else "/latestByTag/json?tag=" + $scope.selectedTag.name
 			$http.get(url)
 				.success (data,status)->
 					$scope.entries = data
@@ -78,6 +82,7 @@ controller.EntryListCtrl = ($scope,$http)->
 	$scope.status = (state)->
 		if state==states.STARRED then "" else "-empty" 
 
+	$scope.getTags()
 	$scope.refreshEntries()
 
 	scope:$scope
