@@ -33,7 +33,10 @@ controller.FeedListCtrl = ($scope,$http)->
 		encodeURIComponent data
 
 	$scope.removeFeed = (index)->
+		feed = $scope.feeds[index]
 		$scope.feeds.splice index,1
+		if $http
+			$http.get("/removeFeed?URL=" + $scope.encode(feed.URL))
 
 	$scope.refreshFeeds()
 
