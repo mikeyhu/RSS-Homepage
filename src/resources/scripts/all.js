@@ -116,21 +116,41 @@
 
   controller = typeof exports !== "undefined" && exports !== null ? exports : this;
 
-  controller.FeedListCtrl = function($scope) {
-    $scope.feedURL = '';
-    $scope.listData = [
-      {
-        url: "http://feeds.bbci.co.uk/news/rss.xml"
-      }, {
-        url: "http://www.theverge.com/rss/index.xml"
-      }
-    ];
-    $scope.addFeed = function() {
-      $scope.listData.push({
-        url: $scope.feedURL
-      });
-      return $scope.feedURL = '';
+  controller.FeedListCtrl = function($scope, $http) {
+    $scope.newURL = '';
+    $scope.newTags = '';
+    $scope.feeds = [];
+    $scope.ignoreOutput = function(data) {
+      return console.log(data);
     };
+    $scope.newFeed = function() {};
+    $scope.refreshFeeds = function() {
+      if ($http) {
+        return $http.get("/feeds/json").success(function(data, status) {
+          return $scope.feeds = data;
+        }).error(function(data, status) {});
+      }
+    };
+    $scope.addFeed = function() {
+      var feed;
+      feed = {
+        URL: $scope.newURL,
+        tags: [$scope.newTags]
+      };
+      $scope.newURL = '';
+      $scope.newTags = '';
+      $scope.feeds.push(feed);
+      if ($http) {
+        return $http.get("/insertFeed?URL=" + $scope.encode(feed.URL) + "&tags=" + $scope.encode(feed.tags)).success(ignoreOutput).error(ignoreOutput);
+      }
+    };
+    $scope.encode = function(data) {
+      return encodeURIComponent(data);
+    };
+    $scope.removeFeed = function(index) {
+      return $scope.feeds.splice(index, 1);
+    };
+    $scope.refreshFeeds();
     return {
       scope: $scope
     };

@@ -8,6 +8,13 @@ $border-color:#DDD;
 body {
 	font-size:12pt;
 }
+
+tr.feed td,th{
+	padding:0.5em;
+}
+
+
+
 .entries {
 	margin:0em;
 	border-top:1px solid $border-color;

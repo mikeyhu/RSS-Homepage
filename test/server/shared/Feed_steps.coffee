@@ -19,3 +19,10 @@ exports.clearingDataFromThe = (store,finish)=>
 	store.clear (err,result)=>
 		throw err if err
 		finish result
+
+exports.addingSomeFeeds = (feeds)=>
+	intoThe:(store,finish)=>
+		store.insertFeeds feeds,(err,result)=>
+			throw err if err
+			finish result
+

@@ -1,0 +1,26 @@
+extend layout
+block content
+	.feeds(ng-controller="FeedListCtrl")
+		table
+			tr.feed
+				th URL
+				th Tags
+			tr.feed
+				td
+					input(type="text", ng-model="newURL", placeholder="New URL")
+				td
+					input(type="text", ng-model="newTags", placeholder="New tag")
+				td
+					a(class="btn",ng-click="addFeed()")
+						i(class="icon-ok")
+						|  Add
+
+			tr.feed(ng-repeat="f in feeds",ng-class-even="'even'",ng-class-odd="'odd'")
+				td{{f.URL}}
+				td{{f.tags}}
+				td
+					a(class="btn",ng-click="removeFeed($index)")
+						i(class="icon-trash")
+						|  Remove
+
+

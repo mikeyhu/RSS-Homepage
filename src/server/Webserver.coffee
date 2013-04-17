@@ -1,5 +1,7 @@
 express = require 'express'
 store = require './MongoStore.coffee'
+feedstore = require './FeedStore.coffee'
+feed = require './Feed.coffee'
 
 exports.createWebServer = (port,connectionString)->
 	
@@ -11,6 +13,10 @@ exports.createWebServer = (port,connectionString)->
 
 	app.get '/', (req, res)->
 		res.render('index')
+
+	app.get '/editFeeds', (req,res)->
+		res.render('feeds')
+
 
 	app.get '/latest/json', (req,res)->
 		ms = store.createMongostore(connectionString)
@@ -28,6 +34,7 @@ exports.createWebServer = (port,connectionString)->
 			else
 				res.json(result)
 
+
 	app.get '/redirect', (req,res)->
 		ms = store.createMongostore(connectionString)
 		ms.updateEntryState req.query.id,"read",(err,result)->
@@ -40,10 +47,31 @@ exports.createWebServer = (port,connectionString)->
 			res.end(err) if err
 			res.end() unless err
 
+
 	app.post '/changeMultipleStates', (req,res)->
 		ms = store.createMongostore(connectionString)
 		console.log "REQUEST:" + JSON.stringify(req.body)
 		ms.updateEntryStates req.body,req.query.state,(err,result)->
+			res.end(err) if err
+			res.end() unless err
+
+	app.get '/feeds/json', (req,res)->
+		fs = feedstore.createFeedstore(connectionString)
+		fs.getFeeds (err,result)->
+			fs.close()
+			if err then res.end(err)
+			else
+				res.json(result)
+
+	app.get '/insertFeed', (req,res)->
+		fs = feedstore.createFeedstore(connectionString)
+		fs.insertFeed feed.createFeedDelimited(req.query.URL,req.query.tags),(err,result)->
+			res.end(err) if err
+			res.end() unless err
+
+	app.get '/removeFeed', (req,res)->
+		fs = feedstore.createFeedstore(connectionString)
+		fs.deleteFeed feed.createFeedDelimited(req.query.URL,'').URL,(err,result)->
 			res.end(err) if err
 			res.end() unless err
 
