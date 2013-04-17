@@ -2,6 +2,7 @@ express = require 'express'
 store = require './MongoStore.coffee'
 feedstore = require './FeedStore.coffee'
 feed = require './Feed.coffee'
+scheduler = require './Scheduler.coffee'
 
 exports.createWebServer = (port,connectionString)->
 	
@@ -65,9 +66,12 @@ exports.createWebServer = (port,connectionString)->
 
 	app.get '/insertFeed', (req,res)->
 		fs = feedstore.createFeedstore(connectionString)
-		fs.insertFeed feed.createFeedDelimited(req.query.URL,req.query.tags),(err,result)->
+		f = feed.createFeedDelimited(req.query.URL,req.query.tags)
+		fs.insertFeed f,(err,result)->
 			res.end(err) if err
 			res.end() unless err
+			sc = scheduler.createScheduler connectionString,15
+			sc.scheduleFeed(f)
 
 	app.get '/removeFeed', (req,res)->
 		fs = feedstore.createFeedstore(connectionString)
