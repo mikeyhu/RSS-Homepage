@@ -49,9 +49,14 @@ exports.createFeedCollector = (feed)->
 		id: if e.guid then e.guid._ else e.id
 		date: moment(e.pubDate ? e.updated).toJSON()
 		summary: e.summary ? e.description ? ''
-		#image: e['media:thumbnail'] ? ''
+		image: @parseMedia(e['media:thumbnail']) ? ''
 		tags: feed?.tags
 		feedName: feedName ? ''
+
+	parseMedia:(e)->
+		#[{"$":{"width":"66","height":"49","url":"http://news.bbcimg.co.uk/media/images/66397000/jpg/_66397155_comp_clegg_mili_cam.jpg"}},{"$":{"width":"144","height":"81","url":"http://news.bbcimg.co.uk/media/images/66397000/jpg/_66397156_comp_clegg_mili_cam.jpg"}}]
+		e?[0]?.$?.url
+
 
 	parseRSS:(data)->
 		title: data.title

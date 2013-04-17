@@ -13,21 +13,23 @@ describe 'A Feed collector', ->
 			<?xml-stylesheet title="XSL_formatting" type="text/xsl" href="/shared/bsp/xsl/rss/nolsol.xsl"?>
 			<rss xmlns:media="http://search.yahoo.com/mrss/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">  
 			  <channel> 
-			    <title>BBC News - Home</title>  
-			    <link>http://www.bbc.co.uk/news/#sa-ns_mchannel=rss&amp;ns_source=PublicRSS20-sa</link>  
-			    <atom:link href="http://feeds.bbci.co.uk/news/rss.xml" rel="self" type="application/rss+xml"/>  
-			    <item> 
-			      <title>Cameron halts press regulation talks</title>  
-			      <description>Prime Minister David Cameron calls a halt to cross-party talks on press regulation, sparking anger from party leaders and victims of media intrusion.</description>  
-			      <link>http://www.bbc.co.uk/news/uk-21785611#sa-ns_mchannel=rss&amp;ns_source=PublicRSS20-sa</link>  
-			      <guid isPermaLink="false">http://www.bbc.co.uk/news/uk-21785611</guid>  
-			    </item>  
-			    <item> 
-			      <title>Pope sounds warning to Catholics</title>  
-			      <description>Newly elected Pope Francis warns that the Catholic Church will be just "a compassionate NGO" unless it focuses on its primary, religious mission.</description>  
-			      <link>http://www.bbc.co.uk/news/world-europe-21793224#sa-ns_mchannel=rss&amp;ns_source=PublicRSS20-sa</link>  
-			      <guid isPermaLink="false">http://www.bbc.co.uk/news/world-europe-21793224</guid>  
-			    </item>  
+				<title>BBC News - Home</title>  
+				<link>http://www.bbc.co.uk/news/#sa-ns_mchannel=rss&amp;ns_source=PublicRSS20-sa</link>  
+				<atom:link href="http://feeds.bbci.co.uk/news/rss.xml" rel="self" type="application/rss+xml"/>  
+				<item> 
+				  <title>Cameron halts press regulation talks</title>  
+				  <description>Prime Minister David Cameron calls a halt to cross-party talks on press regulation, sparking anger from party leaders and victims of media intrusion.</description>  
+				  <link>http://www.bbc.co.uk/news/uk-21785611#sa-ns_mchannel=rss&amp;ns_source=PublicRSS20-sa</link>  
+				  <guid isPermaLink="false">http://www.bbc.co.uk/news/uk-21785611</guid>
+				  <media:thumbnail width="66" height="49" url="http://news.bbcimg.co.uk/media/images/66397000/jpg/_66397155_comp_clegg_mili_cam.jpg"/>  
+				  <media:thumbnail width="144" height="81" url="http://news.bbcimg.co.uk/media/images/66397000/jpg/_66397156_comp_clegg_mili_cam.jpg"/>   
+				</item>  
+				<item> 
+				  <title>Pope sounds warning to Catholics</title>  
+				  <description>Newly elected Pope Francis warns that the Catholic Church will be just "a compassionate NGO" unless it focuses on its primary, religious mission.</description>  
+				  <link>http://www.bbc.co.uk/news/world-europe-21793224#sa-ns_mchannel=rss&amp;ns_source=PublicRSS20-sa</link>  
+				  <guid isPermaLink="false">http://www.bbc.co.uk/news/world-europe-21793224</guid>  
+				</item>  
 			  </channel> 
 			</rss>
 			"""
@@ -51,22 +53,22 @@ describe 'A Feed collector', ->
 			"""
 			<?xml version="1.0" encoding="utf-8"?>
 			<feed xmlns="http://www.w3.org/2005/Atom">
-        		<title>Example Feed</title>
-        		<subtitle>Insert witty or insightful remark here</subtitle>
-        		<link href="http://example.org/"/>
-        		<updated>2003-12-13T18:30:02Z</updated>
-        		<author>
-                	<name>John Doe</name>
-                	<email>johndoe@example.com</email>
-        		</author>
-        		<id>urn:uuid:60a76c80-d399-11d9-b93C-0003939e0af6</id>
-	        	<entry>
-	                <title>Atom-Powered Robots Run Amok</title>
-	                <link href="http://example.org/2003/12/13/atom03"/>
-	                <id>urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a</id>
-	                <updated>2003-12-13T18:30:02Z</updated>
-	                <summary>Some text.</summary>
-	        	</entry>
+				<title>Example Feed</title>
+				<subtitle>Insert witty or insightful remark here</subtitle>
+				<link href="http://example.org/"/>
+				<updated>2003-12-13T18:30:02Z</updated>
+				<author>
+					<name>John Doe</name>
+					<email>johndoe@example.com</email>
+				</author>
+				<id>urn:uuid:60a76c80-d399-11d9-b93C-0003939e0af6</id>
+				<entry>
+					<title>Atom-Powered Robots Run Amok</title>
+					<link href="http://example.org/2003/12/13/atom03"/>
+					<id>urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a</id>
+					<updated>2003-12-13T18:30:02Z</updated>
+					<summary>Some text.</summary>
+				</entry>
 			</feed>
 			"""
 		fc = collector.createFeedCollector()
@@ -91,7 +93,7 @@ describe 'A Feed collector', ->
 			link:"http://example.org/2003/12/13/atom03"
 			id:"def"
 			date: "2013-03-21T16:09:59.852Z"
-#			image:""
+			image:""
 			summary:""
 			tags:["News"]
 			feedName:""
@@ -105,3 +107,8 @@ describe 'A Feed collector', ->
 			expect(result.entry[0].date).to.equal "2013-03-14T19:55:45.000Z"
 			expect(result.entry[0].tags).to.eql ["News"]
 			done()
+
+	it 'should be able to parse an media:thumbnail',()->
+		media = [{"$":{"width":"66","height":"49","url":"http://news.bbcimg.co.uk/media/images/66397000/jpg/_66397155_comp_clegg_mili_cam.jpg"}},{"$":{"width":"144","height":"81","url":"http://news.bbcimg.co.uk/media/images/66397000/jpg/_66397156_comp_clegg_mili_cam.jpg"}}]
+		fc = collector.createFeedCollector()
+		expect(fc.parseMedia media).to.equal "http://news.bbcimg.co.uk/media/images/66397000/jpg/_66397155_comp_clegg_mili_cam.jpg"
