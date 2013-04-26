@@ -26,7 +26,7 @@ controller.EntryListCtrl = ($scope,$http)->
 	$scope.refreshEntries = ()->
 		if $http
 			url = if $scope.selectedTag.group=="Types" then $scope.selectedTag.url else "/latestByTag/json?tag=" + $scope.selectedTag.name
-			$http.get(url)
+			$http.get($scope.cacheBust url)
 				.success (data,status)->
 					$scope.entries = data
 				.error (data,status)->
@@ -41,6 +41,10 @@ controller.EntryListCtrl = ($scope,$http)->
 
 	$scope.findNew = ()->
 		entry for entry in $scope.entries when entry.state==states.NEW
+
+	$scope.cacheBust = (url)-> 
+		start =	if url.indexOf("?") > 1 then "&" else "?"		
+		"#{url}#{start}_=#{Math.random() * 5}"	
 
 	#events
 	$scope.remove = (index)->
