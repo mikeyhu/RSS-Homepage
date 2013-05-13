@@ -19,6 +19,7 @@ exports.createScheduler = (connectionString,waitTime = 15) ->
 				logError err,feed
 				fun err,null
 			else
+				console.log "Adding #{result.entry.length} entries from #{feed.URL}"
 				ms.insertEntries result.entry,(err,result)->
 					if err then logError err,feed
 					fun(err,result)

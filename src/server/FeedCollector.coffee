@@ -46,7 +46,9 @@ exports.createFeedCollector = (feed)->
 	parseEntry:(e,feedName)->
 		title: e.title
 		link: if e.link.$ then e.link.$.href else e.link
-		id: if e.guid then e.guid._ else e.id
+		id: if e.guid
+				if e.guid._ then e.guid._ else e.guid 
+			else e.id
 		date: moment(e.pubDate ? e.updated).toJSON()
 		summary: e.summary ? e.description ? ''
 		image: @parseMedia(e['media:thumbnail']) ? ''
