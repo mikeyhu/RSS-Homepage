@@ -24,6 +24,7 @@ controller.EntryListCtrl = ($scope,$http)->
 
 	#internal functions
 	$scope.refreshEntries = ()->
+		$scope.entries = []
 		if $http
 			url = if $scope.selectedTag.group=="Types" then $scope.selectedTag.url else "/latestByTag/json?tag=" + $scope.selectedTag.name
 			$http.get($scope.cacheBust url)
@@ -84,7 +85,10 @@ controller.EntryListCtrl = ($scope,$http)->
 		if open then "minus" else "plus"
 
 	$scope.status = (state)->
-		if state==states.STARRED then "" else "-empty" 
+		if state==states.STARRED then "" else "-empty"
+
+	$scope.isEmpty = ->
+		$scope.entries.length == 0 
 
 	$scope.getTags()
 	$scope.refreshEntries()

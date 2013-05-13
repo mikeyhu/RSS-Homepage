@@ -42,5 +42,18 @@ describe 'A EntryListCtrl controller', ->
 			{title:"c",id:"cc",state:"new"}
 		]
 
+	it 'should know if the list is empty', ()->
+		c = new controller.EntryListCtrl({})
+		c.scope.entries = []
+		expect(c.scope.isEmpty()).to.equal true
+
+	it 'should know if the list contains items', ()->
+		c = new controller.EntryListCtrl({})
+		c.scope.entries = [
+			{title:"a",id:"aa",state:"new"},
+			{title:"b",id:"bb",state:"starred"},
+			{title:"c",id:"cc",state:"new"}
+		]
+		expect(c.scope.isEmpty()).to.equal false
 
 

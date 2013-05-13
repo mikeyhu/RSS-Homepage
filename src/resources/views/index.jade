@@ -25,7 +25,7 @@ block content
 				h3 {{e.title}}
 			span{{e.date | date:'medium'}}
 			p(class="toggle-{{e.open}}",ng-bind-html-unsafe="e.summary")
-		.entry
+		.entry(ng-hide="isEmpty()")
 			div(class="btn-group")
 				a(class="btn btn-primary",ng-click="archiveAllNew()")
 					i(class="icon-trash icon-white")
@@ -33,4 +33,6 @@ block content
 				a(class="btn btn-primary",ng-click="more()")
 					i(class="icon-repeat icon-white")
 					|  More articles
+		.entry(ng-show="isEmpty()")
+			h3 Loading Entries, please wait.
 
