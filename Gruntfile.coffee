@@ -5,9 +5,10 @@ module.exports = (grunt)->
 		
 		coffee:
 			client:
-				compile:
-					files:
-						'src/resources/scripts/all.js': ["src/client/*.coffee"]
+				options:
+					join: true
+				files:
+					"src/resources/scripts/all.js": ["src/client/*.coffee"]
 
 		simplemocha:
 			client:
