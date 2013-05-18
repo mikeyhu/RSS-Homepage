@@ -24,7 +24,20 @@ module.exports = (grunt)->
 			stopMongo:
 				command: 'ops/stop-test-mongodb.sh'
 
+		compass:
+			dev:
+				options:
+					config: 'config.rb'
+					force: true
+			prod:
+				options:
+					config: 'config.rb'
+					environment: 'production'
+					outputStyle: 'compressed'
+					force: true
+
 	grunt.loadNpmTasks 'grunt-contrib-coffee'
+	grunt.loadNpmTasks 'grunt-contrib-compass'
 	grunt.loadNpmTasks 'grunt-simple-mocha'
 	grunt.loadNpmTasks 'grunt-exec'
 

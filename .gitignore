@@ -4,3 +4,5 @@ test/resources/database/
 log/
 .sass-cache/
 dev/resources/database/
+src/resources/styles/screen.css
+src/resources/scripts/all.js
