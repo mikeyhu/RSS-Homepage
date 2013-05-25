@@ -5,6 +5,10 @@
 
 $border-color:#DDD;
 
+header a h1 {
+	color:black;
+}
+
 body {
 	font-size:12pt;
 }
@@ -12,8 +16,6 @@ body {
 tr.feed td,th{
 	padding:0.5em;
 }
-
-
 
 .entries {
 	margin:0em;
