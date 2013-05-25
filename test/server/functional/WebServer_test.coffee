@@ -20,19 +20,19 @@ twentyEntries = ({title:"title #{num}",id:"id#{num}",date:moment().subtract('min
 
 webserver.createWebServer(port,connectionString)
 
-requestingSomeJSONFrom=(URL,fun)->
-	data=""
+requestingSomeJSONFrom = (URL,fun)->
+	data = ""
 	http.get URL, (res) ->
 		res.setEncoding('utf8')
 		res.on 'data', (chunk)->
-			data=data+chunk
+			data = data+chunk
 		res.on 'end', ()->
 			fun(null,JSON.parse(data))
 	.on 'error', (e)->	
 		console.log("Got error: " + e.message)
 		fun(e.message,null)
 
-postingSomeJSON=(URL,input,fun)->
+postingSomeJSON = (URL,input,fun)->
 
 	inputString = JSON.stringify(input)
 	headers = {
@@ -43,11 +43,11 @@ postingSomeJSON=(URL,input,fun)->
 	options = urlparser.parse(URL,true)
 	options.method = "POST"
 	options.headers = headers
-	data=""
+	data = ""
 	req = http.request options, (res) ->
 		res.setEncoding('utf8')
 		res.on 'data', (chunk)->
-			data=data+chunk
+			data = data+chunk
 		res.on 'end', ()->
 			fun(null,data)
 	.on 'error', (e)->  

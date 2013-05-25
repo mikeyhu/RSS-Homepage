@@ -15,11 +15,11 @@ exports.createFeedCollector = (feed)->
 
 	requestFeed:(URL,fun)->
 		options = url.parse(URL,true)
-		data=""
+		data = ""
 		req = http.request options, (res) ->
 			res.setEncoding('utf8')
 			res.on 'data', (chunk)->
-				data=data+chunk
+				data = data + chunk
 			res.on 'end', ()->
 				fun(null,data)
 		.on 'error', (e)->	

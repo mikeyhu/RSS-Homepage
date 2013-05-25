@@ -36,13 +36,18 @@ module.exports = (grunt)->
 					outputStyle: 'compressed'
 					force: true
 
+		clean:
+			client: ["src/resources/scripts/","src/resources/styles/"]
+
 	grunt.loadNpmTasks 'grunt-contrib-coffee'
 	grunt.loadNpmTasks 'grunt-contrib-compass'
+	grunt.loadNpmTasks 'grunt-contrib-clean'
 	grunt.loadNpmTasks 'grunt-simple-mocha'
 	grunt.loadNpmTasks 'grunt-exec'
 
-	grunt.registerTask 'client',['simplemocha:client','coffee:client']
+	grunt.registerTask 'client',['clean:client','compass:dev','simplemocha:client','coffee:client']
 	grunt.registerTask 'server',['exec:stopMongo','exec:startMongo','simplemocha:server','exec:stopMongo']
+	grunt.registerTask 'production',['clean:client','compass:prod','coffee:client']
 
 	grunt.registerTask 'default',['server','client']
 
