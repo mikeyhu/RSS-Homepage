@@ -1,5 +1,8 @@
 #!/bin/bash
 pidfile="test/resources/database.pid"
-PID=`cat ${pidfile}`
-rm $pidfile
-kill $PID
+if [ -f $pidfile ] 
+	then
+	PID=`cat ${pidfile}`
+	rm $pidfile
+	kill $PID
+fi

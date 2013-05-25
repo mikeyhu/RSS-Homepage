@@ -42,7 +42,7 @@ module.exports = (grunt)->
 	grunt.loadNpmTasks 'grunt-exec'
 
 	grunt.registerTask 'client',['simplemocha:client','coffee:client']
-	grunt.registerTask 'server',['exec:startMongo','simplemocha:server','exec:stopMongo']
+	grunt.registerTask 'server',['exec:stopMongo','exec:startMongo','simplemocha:server','exec:stopMongo']
 
 	grunt.registerTask 'default',['server','client']
 
