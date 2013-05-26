@@ -78,3 +78,6 @@ exports.createMongostore = (connectionString)->
 			else
 				collection.update {id:id},{$set:{state:state}},{w:1, upsert:true},@close(fun)
 
+#Aggregate state and tags...
+#	db.entryData.aggregate({$group:{_id:{state:"$state",tags:"$tags"},count:{$sum:1}}})
+
