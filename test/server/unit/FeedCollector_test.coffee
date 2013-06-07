@@ -42,8 +42,8 @@ describe 'A Feed collector', ->
 			done()
 
 	it 'should be able to retrieve and parse some RSS XML', (done)->
-		fc = collector.createFeedCollector()
-		fc.requestFeed fakeRSS,(err,result)->
+		fc = collector.createFeedCollector(feed.createFeed(fakeRSS,["News"]))
+		fc.requestFeed (err,result)->
 			expect(err,err).to.be.null
 			expect(result,"result").to.exist
 			done()
@@ -97,6 +97,7 @@ describe 'A Feed collector', ->
 			summary:""
 			tags:["News"]
 			feedName:""
+			hostName:"localhost"
 
 	it 'should be able to retrieve a feed when provided with a Feed object', (done)->
 		fc = collector.createFeedCollector(feed.createFeed(fakeRSS,["News"]))

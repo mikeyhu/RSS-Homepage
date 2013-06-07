@@ -6,17 +6,18 @@ moment = require 'moment'
 
 exports.createFeedCollector = (feed)->
 
+	parsedURL = if feed then url.parse(feed.URL,true) else {}
+
 	collectFeed:(fun)->
 		console.log "Collecting from '#{feed.URL}' at #{new Date().toJSON()}"
-		@requestFeed feed.URL,(err,data)=>
+		@requestFeed (err,data)=>
 			if err then fun(err,null)
 			else
 				@parseFeed data, fun
 
-	requestFeed:(URL,fun)->
-		options = url.parse(URL,true)
+	requestFeed:(fun)->
 		data = ""
-		req = http.request options, (res) ->
+		req = http.request parsedURL, (res) ->
 			res.setEncoding('utf8')
 			res.on 'data', (chunk)->
 				data = data + chunk
@@ -58,6 +59,7 @@ exports.createFeedCollector = (feed)->
 			image: @parseMedia(e['media:thumbnail']) ? ''
 			tags: feed?.tags
 			feedName: feedName ? ''
+			hostName: parsedURL.hostname
 		}
 
 	parseMedia:(e)->
