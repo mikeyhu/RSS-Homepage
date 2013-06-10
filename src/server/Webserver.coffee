@@ -87,6 +87,25 @@ exports.createWebServer = (port,connectionString)->
 			else
 				res.json(result)
 
+	app.get '/tagsAndHostNames/json', (req,res)->
+		fs = feedstore.createFeedstore(connectionString)
+		ms = store.createMongostore(connectionString)
+
+		th = {}
+		count = 0
+
+		fin = (propertyName)->(err,result)->
+			count++
+			if err then res.end(err)
+			else
+				th[propertyName] = result
+				if count == 2
+					fs.close()
+					ms.close()
+					res.json(th)
+
+		fs.getTags fin("tags")
+		ms.getHostName fin("hostNames")
 
 	# Start Server
 	app.listen port, -> console.log "Server is listening on #{port}\nPress CTRL-C to stop server."

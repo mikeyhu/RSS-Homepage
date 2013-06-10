@@ -17,9 +17,9 @@ similarData = [
 	]
 
 entriesWithDates = [
-	{title : "an entry",id : "anEntry",link : "http://an",date : moment().subtract('days',2).toJSON()}
-	{title : "a newer entry",id : "aNewerEntry",link : "http://an",date : moment().subtract('days',1).toJSON()}
-	{title : "a older entry",id : "aOlderEntry",link : "http://an",date : moment().subtract('days',3).toJSON()}
+	{title : "an entry",id : "anEntry",link : "http://an",date : moment().subtract('days',2).toJSON(), hostName:"a"}
+	{title : "a newer entry",id : "aNewerEntry",link : "http://an",date : moment().subtract('days',1).toJSON(), hostName:"a"}
+	{title : "a older entry",id : "aOlderEntry",link : "http://an",date : moment().subtract('days',3).toJSON(), hostName:"b"}
 	]
 
 twentyEntries = ({title:"title #{num}",id:"id#{num}"} for num in [0...20])
@@ -116,4 +116,10 @@ describe 'A mongodb store', ->
 			@database.getLatestByTag "News",10,(err,result)->
 				expect(result.length).to.equal 1
 				expect(result[0].title).to.equal "Another news story"
+				done()
+
+	it 'should return hostnames',(done)->
+		after.insertingSome(entriesWithDates).intoThe @database,(result)=>
+			@database.getHostName (err,result)->
+				expect(result).to.eql(["a","b"])
 				done()

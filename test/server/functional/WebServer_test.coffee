@@ -16,7 +16,7 @@ connectionString = "mongodb://localhost:27000/feeds"
 database = mongostore.createMongostore(connectionString)
 feedsDB = feedstore.createFeedstore(connectionString)
 
-twentyEntries = ({title:"title #{num}",id:"id#{num}",date:moment().subtract('minutes',20-num),tags:[if num < 10 then "News" else "Technology"]} for num in [0...20])
+twentyEntries = ({title:"title #{num}",id:"id#{num}",date:moment().subtract('minutes',20-num),tags:[if num < 10 then "News" else "Technology"],hostName:"localhost"} for num in [0...20])
 
 webserver.createWebServer(port,connectionString)
 
@@ -143,4 +143,19 @@ describe 'Requesting a list of tags', (done)->
 	it 'should return JSON of them', (done)->
 		requestingSomeJSONFrom url + "tags/json",(err,data)->
 			expect(data).to.eql ["News","Technology"]
+			done()
+
+describe 'Requesting the list of tags and hostNames', () ->
+	before (done) ->
+		after.insertingSome(twentyEntries).intoThe database,(err,result)->
+			feeds = [
+				{URL: "http://feeds.bbci.co.uk/news/rss.xml",tags:["News"]},
+				{URL: "http://www.theverge.com/rss/index.xml",tags:["Technology"]}
+			]
+			after.addingSomeFeeds(feeds).intoThe feedsDB,(err,result)->
+				done()
+
+	it 'should return JSON of them', (done) ->
+		requestingSomeJSONFrom url + "tagsAndHostNames/json",(err,data)->
+			expect(data).to.eql {tags:["News","Technology"],hostNames:["localhost"]}
 			done()

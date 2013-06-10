@@ -78,6 +78,12 @@ exports.createMongostore = (connectionString)->
 			else
 				collection.update {id:id},{$set:{state:state}},{w:1, upsert:true},@close(fun)
 
+	getHostName:(fun)->
+		@connect (err,collection)=>
+			if err then fun err,null
+			else
+				collection.distinct 'hostName', @close(fun)
+
 #Aggregate state and tags...
 #	db.entryData.aggregate({$group:{_id:{state:"$state",tags:"$tags"},count:{$sum:1}}})
 
