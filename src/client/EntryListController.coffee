@@ -8,17 +8,18 @@ states = {
 
 controller.EntryListCtrl = ($scope,$http)->
 
-	$scope.tags = [
+	$scope.selectDropdown = [
 		{group:"Types",name:"All",url:"/latest/json"}
 	]
-	$scope.selectedTag = $scope.tags[0]
+	$scope.selected = $scope.selectDropdown[0]
 
-	$scope.getTags = ()->
+	$scope.getTagsAndHostNames = ()->
 		if $http
-			$http.get("/tags/json")
+			$http.get("/tagsAndHostNames/json")
 				.success (data,status)->
-					tags = ( {group:"Tags",name:t} for t in data)
-					$scope.tags = $scope.tags.concat(tags)
+					tags = ( {group:"Tags",name:t} for t in data.tags)
+					hostNames = ({group:"Domains",name:h} for h in data.hostNames)
+					$scope.selectDropdown = $scope.selectDropdown.concat(tags).concat(hostNames)
 
 	$scope.entries = []
 
@@ -26,7 +27,10 @@ controller.EntryListCtrl = ($scope,$http)->
 	$scope.refreshEntries = ()->
 		$scope.entries = []
 		if $http
-			url = if $scope.selectedTag.group=="Types" then $scope.selectedTag.url else "/latestByTag/json?tag=" + $scope.selectedTag.name
+			url = 
+				if $scope.selected.group=="Types" then $scope.selected.url 
+				else if $scope.selected.group=="Tags" then "/latestByTag/json?tag=" + $scope.selected.name
+				else "/latestByHostName/json?hostName=" + $scope.selected.name
 			$http.get($scope.cacheBust url)
 				.success (data,status)->
 					$scope.entries = data
@@ -90,7 +94,7 @@ controller.EntryListCtrl = ($scope,$http)->
 	$scope.isEmpty = ->
 		$scope.entries.length == 0 
 
-	$scope.getTags()
+	$scope.getTagsAndHostNames()
 	$scope.refreshEntries()
 
 	scope:$scope

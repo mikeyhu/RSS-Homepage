@@ -63,6 +63,13 @@ exports.createMongostore = (connectionString)->
 			else
 				collection.find({$and: [{tags:tag},{$or: [{state:"new"},{state:"starred"}]}]}).sort({date:-1}).limit(amount).toArray @close(fun)	
 
+	getLatestByHostName:(hostName,amount,fun)->
+		@connect (err,collection)=>
+			if err then fun err,null
+			else
+				collection.find({$and: [{hostName:hostName},{$or: [{state:"new"},{state:"starred"}]}]}).sort({date:-1}).limit(amount).toArray @close(fun)	
+
+
 	updateEntryStates:(listOfEntryIds,state,fun,current=0,listOfResults=[])->
 		if listOfEntryIds.length <= current then fun(null,listOfResults)
 		else

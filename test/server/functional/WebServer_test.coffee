@@ -78,6 +78,17 @@ describe 'Requesting the latest entries by tag', () ->
 			expect(data.length).to.equal 10
 			done()
 
+describe 'Requesting the latest entries by hostName', () ->
+	before (done) ->
+		after.insertingSome(twentyEntries).intoThe database,(err,result)->
+			done()
+
+	it 'should return JSON of them', (done) ->
+		requestingSomeJSONFrom url + "latestByHostName/json?hostName=localhost",(err,data)->
+			expect(data[0].title).to.equal "title 19"
+			expect(data.length).to.equal 20
+			done()
+
 describe 'Updating multiple entries',(done)->
 	before (done)->
 		after.clearingDataFromThe database,(result)->

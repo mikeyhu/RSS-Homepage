@@ -7,8 +7,8 @@ after = andAlso = require '../shared/Feed_steps.coffee'
 connectionString = "mongodb://localhost:27000/feeds"
 
 feedData = [
-	{"title":"A news story","link":"http://a.news.story/","tags":["Technology"],"id":"1"}
-	{"title":"Another news story","link":"http://another.news.story/","tags":["News"],"id":"2"}
+	{"title":"A news story","link":"http://a.news.story/","tags":["Technology"],"id":"1","hostName":"localhost"}
+	{"title":"Another news story","link":"http://another.news.story/","tags":["News"],"id":"2","hostName":"otherhost"}
 	]
 
 similarData = [
@@ -122,4 +122,11 @@ describe 'A mongodb store', ->
 		after.insertingSome(entriesWithDates).intoThe @database,(result)=>
 			@database.getHostName (err,result)->
 				expect(result).to.eql(["a","b"])
+				done()
+
+	it 'should be able to limit results to certain hostNames',(done)->
+		after.insertingSome(feedData).intoThe @database,(result)=>
+			@database.getLatestByHostName "localhost",10,(err,result)->
+				expect(result.length).to.equal 1
+				expect(result[0].title).to.equal "A news story"
 				done()
