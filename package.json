@@ -9,7 +9,9 @@
     "mongodb": "1.2.x",
     "jade": "0.28.x",
     "underscore": "1.4.x",
-    "moment": "2.0.x"
+    "moment": "2.0.x",
+    "xpath": "0.0.5",
+    "xmldom": "0.1.16"
   },
   "devDependencies": {
     "chai": "1.5.x",
