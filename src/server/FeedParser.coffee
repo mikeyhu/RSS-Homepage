@@ -18,11 +18,11 @@ exports.createFeedParser = (feed)->
 		items = xpath.select("/rss/channel/item",doc)
 		results =
 			title : title
-			entry : @parseRSSItem(item) for item in items
+			entry : @parseRSSItem(item,title) for item in items
 
 		fun(null,results)
 
-	parseRSSItem:(item)->
+	parseRSSItem:(item,feedName)->
 		id:		@oneOf @getString("guid/text()",item),@getString("link/text()",item)
 		title:	@getString("title/text()",item)
 		link:	@getString("link/text()",item)
@@ -30,25 +30,27 @@ exports.createFeedParser = (feed)->
 		image:	@oneOf @getAttribute("(.//*[local-name(.)='thumbnail'])[1]/@url",item),@getAttribute("(.//*[local-name(.)='content'])[1][@type='image/jpeg']/@url",item)
 		date: 	moment(@getString("pubDate/text()",item))?.toJSON()
 		tags:	feed?.tags
-		hostName:@parsedURL.hostname		
+		hostName:@parsedURL.hostname
+		feedName:feedName		
 
 	parseAtom:(doc,fun)->
 		title = @getString("/feed/title/text()",doc)
 		items = xpath.select("/feed/entry",doc)
 		results =
 			title : title
-			entry : @parseAtomItem(item) for item in items
+			entry : @parseAtomItem(item,title) for item in items
 
 		fun(null,results)
 
-	parseAtomItem:(item)->
+	parseAtomItem:(item,feedName)->
 		id:		@oneOf @getString("id/text()",item),@getAttribute("link/@href",item)
 		title:	@getString("title/text()",item)
 		link:	@getAttribute("link[1]/@href",item)
 		summary:@getString("summary/text()",item)
 		date: 	moment(@getString("updated/text()",item))?.toJSON()
 		tags:	feed?.tags
-		hostName:@parsedURL.hostname	
+		hostName:@parsedURL.hostname
+		feedName:feedName	
 
 	getString:(path,node)->
 		xpath.select(path,node).toString().replace("&amp;","&").replace("&lt;","<").replace("&gt;",">")

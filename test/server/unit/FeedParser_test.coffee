@@ -64,6 +64,7 @@ describe 'A Feed collector', ->
 			expect(result.entry[0].id).to.equal("http://www.bbc.co.uk/news/uk-21785611")
 			expect(result.entry[0].image).to.equal("http://news.bbcimg.co.uk/media/images/66397000/jpg/_66397155_comp_clegg_mili_cam.jpg")
 			expect(result.entry[0].date).to.equal("2013-03-14T19:55:45.000Z")
+			expect(result.entry[0].feedName).to.equal("BBC News - Home")
 			expect(result.entry[1].id).to.equal("http://www.bbc.co.uk/news/world-europe-21793224#sa-ns_mchannel=rss&ns_source=PublicRSS20-sa")
 			expect(result.entry[1].link).to.equal("http://www.bbc.co.uk/news/world-europe-21793224#sa-ns_mchannel=rss&ns_source=PublicRSS20-sa")
 			expect(result.entry[1].image).to.equal("http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2013/6/18/1371564440080/us-afghanistan-005.jpg")
@@ -124,6 +125,7 @@ describe 'A Feed collector', ->
 			expect(result.entry[0].title).to.equal("Atom-Powered Robots Run Amok")
 			expect(result.entry[0].link).to.equal("http://example.org/2003/12/13/atom03")
 			expect(result.entry[0].date).to.equal("2003-12-13T18:30:02.000Z")
+			expect(result.entry[0].feedName).to.equal("Example Feed")
 			done()
 
 	it 'should return an error if it cannot recognise the feed type',->
