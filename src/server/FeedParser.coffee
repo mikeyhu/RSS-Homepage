@@ -1,10 +1,11 @@
 xpath = require 'xpath'
 dom = require('xmldom').DOMParser
-http = require 'http'
-_ = require 'underscore'
 moment = require 'moment'
+url = require 'url'
 
 exports.createFeedParser = (feed)->
+
+	parsedURL:if feed then url.parse(feed.URL,true) else {}
 
 	parseFeed:(data,fun)->
 		doc = new dom().parseFromString(data)
@@ -29,7 +30,7 @@ exports.createFeedParser = (feed)->
 		image:	@getAttribute("(//*[local-name(.)='thumbnail'])[1]/@url",item)
 		date: 	moment(@getString("pubDate/text()",item))?.toJSON()
 		tags:	feed?.tags
-		hostName:feed?.parsedURL.hostname		
+		hostName:@parsedURL.hostname		
 
 	parseAtom:(doc,fun)->
 		title = @getString("/feed/title/text()",doc)
@@ -47,7 +48,7 @@ exports.createFeedParser = (feed)->
 		summary:@getString("summary/text()",item)
 		date: 	moment(@getString("updated/text()",item))?.toJSON()
 		tags:	feed?.tags
-		hostName:feed?.parsedURL.hostname	
+		hostName:@parsedURL.hostname	
 
 	getString:(path,node)->
 		xpath.select(path,node).toString().replace("&amp;","&").replace("&lt;","<").replace("&gt;",">")

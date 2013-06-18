@@ -17,8 +17,4 @@ describe 'A Feed', ->
 	it 'should be able to split comma delimited tags', ->
 		f = feed.createFeedDelimited("http://URL","Technology,News")
 		expect(f.tags).to.eql ["Technology","News"]
-
-	it 'should have parsed the URL so that the hostname is retreiveable', ->
-		f = feed.createFeed("http://www.domain.com",["Technology","News"])
-		expect(f.parsedURL.hostname).to.equal("www.domain.com")
 		
