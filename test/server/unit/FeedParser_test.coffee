@@ -48,6 +48,7 @@ describe 'A Feed collector', ->
 				  <title>Pope sounds warning to Catholics</title>  
 				  <description>Newly elected Pope Francis warns that the Catholic Church will be just "a compassionate NGO" unless it focuses on its primary, religious mission.</description>  
 				  <link>http://www.bbc.co.uk/news/world-europe-21793224#sa-ns_mchannel=rss&amp;ns_source=PublicRSS20-sa</link>  
+				  <media:content height="84" lang="" type="image/jpeg" width="140" url="http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2013/6/18/1371564440080/us-afghanistan-005.jpg">
 				  <pubDate>Thu, 14 Mar 2013 19:55:45 GMT</pubDate> 
 				</item>  
 			  </channel> 
@@ -65,6 +66,7 @@ describe 'A Feed collector', ->
 			expect(result.entry[0].date).to.equal("2013-03-14T19:55:45.000Z")
 			expect(result.entry[1].id).to.equal("http://www.bbc.co.uk/news/world-europe-21793224#sa-ns_mchannel=rss&ns_source=PublicRSS20-sa")
 			expect(result.entry[1].link).to.equal("http://www.bbc.co.uk/news/world-europe-21793224#sa-ns_mchannel=rss&ns_source=PublicRSS20-sa")
+			expect(result.entry[1].image).to.equal("http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2013/6/18/1371564440080/us-afghanistan-005.jpg")
 			done()
 
 	it 'should be able to parse an RSS Feed', (done)->

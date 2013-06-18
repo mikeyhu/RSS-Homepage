@@ -27,7 +27,7 @@ exports.createFeedParser = (feed)->
 		title:	@getString("title/text()",item)
 		link:	@getString("link/text()",item)
 		summary:@getString("description/text()",item)	
-		image:	@getAttribute("(//*[local-name(.)='thumbnail'])[1]/@url",item)
+		image:	@oneOf @getAttribute("(.//*[local-name(.)='thumbnail'])[1]/@url",item),@getAttribute("(.//*[local-name(.)='content'])[1][@type='image/jpeg']/@url",item)
 		date: 	moment(@getString("pubDate/text()",item))?.toJSON()
 		tags:	feed?.tags
 		hostName:@parsedURL.hostname		
