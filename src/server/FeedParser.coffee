@@ -8,8 +8,13 @@ exports.createFeedParser = (feed)->
 	parsedURL:if feed then url.parse(feed.URL,true) else {}
 
 	parseFeed:(data,fun)->
-		doc = new dom().parseFromString(data)
-		if xpath.select("/rss",doc).length > 0 then @parseRSS(doc,fun)
+		doc=try 
+				new dom().parseFromString(data)
+			catch e
+				console.log "Failed to parse XML for feed [#{feed?.URL}]. Error: #{e}"
+				null
+		if doc==null then fun("Unable to parse feed, invalid XML.",null)
+		else if xpath.select("/rss",doc).length > 0 then @parseRSS(doc,fun)
 		else if xpath.select("/feed",doc).length > 0 then @parseAtom(doc,fun)
 		else fun("Unable to parse feed, not recognised as RSS or Atom.",null)
 

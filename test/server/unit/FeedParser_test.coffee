@@ -7,6 +7,12 @@ fakeRSS = "http://localhost:7777/rss.xml"
 
 describe 'A Feed collector', ->
 
+	it 'should not throw an exception on invalid XML', ->
+		fp = parser.createFeedParser()
+		fp.parseFeed "<invalid><abc>some data</abc></fallover>",(err,result)->
+			expect(err).to.equal("Unable to parse feed, invalid XML.")
+			expect(result).to.equal(null) 
+
 	it 'should be able to retrieve a string using an xpath', ->
 		doc = new dom().parseFromString("<abc>some data</abc>")
 		fp = parser.createFeedParser()
