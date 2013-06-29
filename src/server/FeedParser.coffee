@@ -50,7 +50,7 @@ exports.createFeedParser = (feed)->
 	parseAtomItem:(item,feedName)->
 		id:		@oneOf @getString("id/text()",item),@getAttribute("link/@href",item)
 		title:	@getString("title/text()",item)
-		link:	@getAttribute("link[1]/@href",item)
+		link:	@oneOf @getAttribute("link[@type='text/html']/@href",item), @getAttribute("link[1]/@href",item)
 		summary:@getString("summary/text()",item)
 		date: 	moment(@getString("updated/text()",item))?.toJSON()
 		tags:	feed?.tags
