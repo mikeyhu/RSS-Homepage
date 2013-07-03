@@ -58,7 +58,8 @@ exports.createFeedParser = (feed)->
 		feedName:feedName	
 
 	getString:(path,node)->
-		xpath.select(path,node).toString().replace("&amp;","&").replace("&lt;","<").replace("&gt;",">")
+		@stripCData(xpath.select(path,node).toString().replace("&amp;","&").replace("&lt;","<").replace("&gt;",">"))
+
 
 	getAttribute:(path,node)->
 		attr = xpath.select1(path,node)
@@ -68,3 +69,7 @@ exports.createFeedParser = (feed)->
 		(if result!="" then return result) for result in someResults
 		""
 
+	stripCData:(input)->
+		output = input.match(/<!\[CDATA\[(.*)\]\]>/)
+		if output?.length>0 then output[1]
+		else input

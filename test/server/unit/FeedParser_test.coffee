@@ -19,6 +19,11 @@ describe 'A Feed collector', ->
 		expect(fp.getString("/abc/text()",doc)).to.equal("some data")
 		expect(fp.getString("/bcd/text()",doc)).to.equal("") 	
 
+	it 'should be able to retrieve a string using an xpath to an element containing cdata', ->
+		doc = new dom().parseFromString("<abc><![CDATA[some data]]></abc>")
+		fp = parser.createFeedParser()
+		expect(fp.getString("/abc/text()",doc)).to.equal("some data")
+
 	it 'should be able to retrieve a string with an & in using an xpath and decode it correctly', ->
 		doc = new dom().parseFromString("<abc>some&lt; &amp; &gt;data</abc>")
 		fp = parser.createFeedParser()
