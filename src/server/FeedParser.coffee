@@ -70,6 +70,6 @@ exports.createFeedParser = (feed)->
 		""
 
 	stripCData:(input)->
-		output = input.match(/<!\[CDATA\[(.*)\]\]>/)
+		output = input.match(/<!\[CDATA\[(.*)\]\]>$/)
 		if output?.length>0 then output[1]
 		else input
