@@ -18,8 +18,9 @@ if cluster.isMaster
 		cluster.fork()
 else
 	schedule = (feed)->
-		sc = scheduler.createScheduler connectionString,15
-		sc.scheduleFeed(feed)
+		if feed.URL.lastIndexOf("https", 0) == -1
+			sc = scheduler.createScheduler connectionString,15
+			sc.scheduleFeed(feed)
 
 	fs = feedstore.createFeedstore(connectionString)
 	fs.getFeeds (err,feeds)->
