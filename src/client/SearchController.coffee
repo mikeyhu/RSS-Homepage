@@ -34,6 +34,9 @@ controller.SearchCtrl = ($scope,$http)->
 		start =	if url.indexOf("?") > 1 then "&" else "?"		
 		"#{url}#{start}_=#{Math.random() * 5}"
 
+	$scope.encode = (url)->
+		encodeURIComponent url
+
 	$scope.plusMinus = (open)->
 		if open then "minus" else "plus"
 
