@@ -1,5 +1,5 @@
 !!!5
-html(ng-app)
+html(ng-app="rss")
 	head
 		title Mike's Homepage
 		script(src='http://ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.min.js')
@@ -12,6 +12,17 @@ html(ng-app)
 			header
 				a(href="/")
 					h1 Mike's Homepage
+			.navbar
+				.navbar-inner
+					ul.nav
+						li
+							a(href="/") Home
+						li
+							a(href="/search") Search
+						li
+							a(href="/editFeeds") Edit Feeds
+					form(class="navbar-search pull-right",ng-controller="SearchFormCtrl",ng-submit="search()")
+						input(id="searchTerm",type="text",class="search-query",placeholder="Search",ng-model="searchTerm")
 			.main-content
 				block content
 			footer

@@ -3,6 +3,7 @@ webserver = require './Webserver.coffee'
 scheduler = require './Scheduler.coffee'
 feed = require './Feed.coffee'
 feedstore = require './FeedStore.coffee'
+mongostore = require './MongoStore.coffee'
 
 process.execPath = 'coffee'
 
@@ -25,6 +26,10 @@ else
 	fs = feedstore.createFeedstore(connectionString)
 	fs.getFeeds (err,feeds)->
 		schedule f for f in feeds
+
+	ms = mongostore.createMongostore(connectionString)
+	ms.prepareIndexes (err,result)->
+		console.log(err) if err	
 
 	port = process.env.PORT or 5555
 	webserver.createWebServer(port,connectionString)

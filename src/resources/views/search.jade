@@ -1,0 +1,22 @@
+extend layout
+block content
+	.entries(ng-controller="SearchCtrl")
+		.entry
+			.input-append
+				input(id="searchTerm",type="text",ng-model="searchTerm",ng-enter="newSearch()")
+				button(class="btn",type="button",ng-click="newSearch()") Go
+		.entry(ng-repeat="e in entries",ng-class-even="'even'",ng-class-odd="'odd'")
+			div(class="btn-group btns-right")
+				a(class="btn",ng-click="e.open = !e.open",ng-init="e.open=false")
+					i(class="icon-{{plusMinus(e.open)}}")
+					|  More
+			span{{e.feedName}}
+			img(src="{{e.image}}",ng-hide="e.image==''")
+			a(href="redirect?to={{encode(e.link)}}&id={{encode(e.id)}}",target="_new",ng-click="read($index)") 
+				h3 {{e.title}}
+			span{{e.date | date:'medium'}}
+			p(class="toggle-{{e.open}}",ng-bind-html-unsafe="e.summary")
+		.entry(ng-show="isEmpty()")
+			h3 Loading Entries, please wait.
+
+

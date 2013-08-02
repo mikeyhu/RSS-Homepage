@@ -170,3 +170,17 @@ describe 'Requesting the list of tags and hostNames', () ->
 		requestingSomeJSONFrom url + "tagsAndHostNames/json",(err,data)->
 			expect(data).to.eql {tags:["News","Technology"],hostNames:["localhost"]}
 			done()
+
+
+describe 'Searching for entries', () ->
+	before (done) ->
+		after.insertingSome(twentyEntries).intoThe database,(err,result)->
+			database.prepareIndexes (err,result)->
+				throw err if err
+				done()
+
+	it 'should return JSON of them', (done) ->
+		requestingSomeJSONFrom url + "search/json?term=title",(err,data)->
+			throw err if err
+			expect(data.length).to.equal 20
+			done()

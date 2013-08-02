@@ -18,6 +18,8 @@ exports.createWebServer = (port,connectionString)->
 	app.get '/editFeeds', (req,res)->
 		res.render('feeds')
 
+	app.get '/search', (req,res)->
+		res.render('search')
 
 	app.get '/latest/json', (req,res)->
 		ms = store.createMongostore(connectionString)
@@ -113,6 +115,14 @@ exports.createWebServer = (port,connectionString)->
 
 		fs.getTags fin("tags")
 		ms.getHostName fin("hostNames")
+
+	app.get '/search/json', (req,res)->
+		ms = store.createMongostore(connectionString)
+		ms.getSearch req.query.term,50,(err,result)->
+			ms.close()
+			if err then res.end(err)
+			else
+				res.json(result)
 
 	# Start Server
 	app.listen port, -> console.log "Server is listening on #{port}\nPress CTRL-C to stop server."
