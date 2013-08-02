@@ -130,3 +130,13 @@ describe 'A mongodb store', ->
 				expect(result.length).to.equal 1
 				expect(result[0].title).to.equal "A news story"
 				done()
+
+	it 'should be able to do text searches',(done)->
+		@database.prepareIndexes (err,result)=>
+			throw err if err
+			after.insertingSome(feedData).intoThe @database,(result)=>
+				@database.getSearch "Another",10,(err,result)->
+					throw err if err
+					console.log result
+					expect(result.length).to.equal 1
+					done()

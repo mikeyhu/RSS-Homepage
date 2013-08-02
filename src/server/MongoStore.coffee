@@ -19,6 +19,15 @@ exports.createMongostore = (connectionString)->
 			else
 				collection.remove {},fun
 
+	prepareIndexes:(fun)->
+		@connect (err,collection)=>
+			if err then fun err,null
+			else
+				@database.admin().command {'setParameter': '*', 'textSearchEnabled': true},(err,result)->
+					if err then fun err,null
+					else
+						collection.ensureIndex {title: "text",summary: "text",feedName:"text"},fun
+
 	count:(fun)->
 		@connect (err,collection)->
 			if err then fun err,null
@@ -90,6 +99,17 @@ exports.createMongostore = (connectionString)->
 			if err then fun err,null
 			else
 				collection.distinct 'hostName', @close(fun)
+
+	getSearch:(searchTerm,amount,fun)->
+		@connect (err,collection)=>
+			if err then fun err,null
+			else
+				collection.db.command {text:entryCollection,search:searchTerm,limit:amount},(err,result)=>
+					if err then fun err,null
+					else
+						r = (res.obj for res in result.results)
+						@close(fun)(null,r)
+
 
 #Aggregate state and tags...
 #	db.entryData.aggregate({$group:{_id:{state:"$state",tags:"$tags"},count:{$sum:1}}})
