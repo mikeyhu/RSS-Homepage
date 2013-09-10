@@ -20,7 +20,6 @@ block content
 					i(class="icon-star{{status(e.state)}}")
 					|  Star
 			span{{e.feedName}}
-			p [{{e.state}}]
 			img(src="{{e.image}}",ng-hide="e.image==''")
 			a(href="redirect?to={{encode(e.link)}}&id={{encode(e.id)}}",target="_new",ng-click="read($index)") 
 				h3 {{e.title}}
