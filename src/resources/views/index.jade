@@ -8,7 +8,7 @@ block content
 			| Showing stories from: 
 			select(ng-model="selected",ng-options="t as t.name group by t.group for t in selectDropdown",ng-change="refreshEntries()")
 
-		.entry(ng-repeat="e in entries",ng-class="e.state",hmSwipeLeft="remove($index)",hmSwipeRight="star($index)",hmHold="e.open = !e.open",ng-init="e.open=false")
+		.entry(ng-repeat="e in entries",ng-class="e.state",hm-swipeleft="remove($index)",hm-swiperight="star($index)",hm-hold="e.open = !e.open",ng-init="e.open=false")
 			div(class="btn-group btns-right")
 				a(class="btn",ng-click="e.open = !e.open")
 					i(class="icon-{{plusMinus(e.open)}}")
