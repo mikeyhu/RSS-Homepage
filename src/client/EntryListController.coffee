@@ -60,7 +60,6 @@ controller.EntryListCtrl = ($scope,$http)->
 
 
 	$scope.star = (index)->
-		alert "[#{index}]"
 		entry = $scope.entries[index]
 		if entry.state==states.STARRED
 			entry.state=states.NEW
