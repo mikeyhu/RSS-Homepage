@@ -8,7 +8,7 @@ block content
 			| Showing stories from: 
 			select(ng-model="selected",ng-options="t as t.name group by t.group for t in selectDropdown",ng-change="refreshEntries()")
 
-		.entry(ng-repeat="e in entries",ng-class-even="'even'",ng-class-odd="'odd'")
+		.entry(ng-repeat="e in entries",ng-class="e.state")
 			div(class="btn-group btns-right")
 				a(class="btn",ng-click="e.open = !e.open",ng-init="e.open=false")
 					i(class="icon-{{plusMinus(e.open)}}")
@@ -20,6 +20,7 @@ block content
 					i(class="icon-star{{status(e.state)}}")
 					|  Star
 			span{{e.feedName}}
+			p [{{e.state}}]
 			img(src="{{e.image}}",ng-hide="e.image==''")
 			a(href="redirect?to={{encode(e.link)}}&id={{encode(e.id)}}",target="_new",ng-click="read($index)") 
 				h3 {{e.title}}

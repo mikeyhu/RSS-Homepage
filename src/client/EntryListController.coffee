@@ -4,6 +4,7 @@ states = {
 	NEW:"new"
 	ARCHIVED:"archived"
 	STARRED:"starred"
+	READ:"read"
 }
 
 controller.EntryListCtrl = ($scope,$http)->

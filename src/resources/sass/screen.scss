@@ -55,11 +55,14 @@ tr.feed td,th{
 .btns-right {
 	float:right;
 }
-.even {
-	background-color : #F6F6F6;
+.read {
+	background-color : #CCFFCC;
 }
-.odd {
-	background-color : #FAFAFA;
+.starred {
+	background-color : #CCE6FF;
+}
+.archived {
+	background-color : #FFBDBD;
 }
 /*a	{
 	@include link-colors(#00c, #00c, #00c, #000)

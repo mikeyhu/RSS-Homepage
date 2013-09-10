@@ -5,7 +5,7 @@ block content
 			.input-append
 				input(id="searchTerm",type="text",ng-model="searchTerm",ng-enter="newSearch()")
 				button(class="btn",type="button",ng-click="newSearch()") Go
-		.entry(ng-repeat="e in entries",ng-class-even="'even'",ng-class-odd="'odd'")
+		.entry(ng-repeat="e in entries",ng-class="e.state")
 			div(class="btn-group btns-right")
 				a(class="btn",ng-click="e.open = !e.open",ng-init="e.open=false")
 					i(class="icon-{{plusMinus(e.open)}}")
