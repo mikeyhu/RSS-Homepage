@@ -1,4 +1,4 @@
-angular.module('rss', ['angular-gestures'])
+angular.module('rss', [])
 
 angular.module('rss').directive 'ngEnter', ->
 	(scope, element, attrs)->
