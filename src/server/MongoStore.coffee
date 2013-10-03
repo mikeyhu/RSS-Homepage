@@ -60,6 +60,13 @@ exports.createMongostore = (connectionString)->
 			else
 				collection.find(search).toArray @close(fun)
 
+	getLatestRead:(amount,fun)->
+		@connect (err,collection)=>
+			if err then fun err,null
+			else
+				collection.find({$or: [{state:"read"}]}).sort({lastUpdatedState:-1}).limit(amount).toArray @close(fun)			
+
+
 	getLatestNew:(amount,fun)->
 		@connect (err,collection)=>
 			if err then fun err,null
@@ -92,7 +99,7 @@ exports.createMongostore = (connectionString)->
 		@connect (err,collection)=>
 			if err then fun err,null
 			else
-				collection.update {id:id},{$set:{state:state}},{w:1, upsert:true},@close(fun)
+				collection.update {id:id},{$set:{state:state,lastUpdatedState:Date.now()}},{w:1, upsert:true},@close(fun)
 
 	getHostName:(fun)->
 		@connect (err,collection)=>

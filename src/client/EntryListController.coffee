@@ -11,6 +11,7 @@ controller.EntryListCtrl = ($scope,$http)->
 
 	$scope.selectDropdown = [
 		{group:"Types",name:"All",url:"/latest/json"}
+		{group:"Types",name:"Recently Read",url:"/latestRead/json"}
 	]
 	$scope.selected = $scope.selectDropdown[0]
 

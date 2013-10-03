@@ -37,6 +37,14 @@ exports.createWebServer = (port,connectionString)->
 			else
 				res.json(result)
 
+	app.get '/latestRead/json', (req,res)->
+		ms = store.createMongostore(connectionString)
+		ms.getLatestRead 50, (err,result)->
+			ms.close()
+			if err then res.end(err)
+			else
+				res.json(result)
+
 	app.get '/latestByHostName/json', (req,res)->
 		ms = store.createMongostore(connectionString)
 		ms.getLatestByHostName req.query.hostName,50, (err,result)->

@@ -140,3 +140,21 @@ describe 'A mongodb store', ->
 					console.log result
 					expect(result.length).to.equal 1
 					done()
+
+	it 'should be able to change state and record when the state changed', (done)->
+		@database.insertEntry {"title":"An interesting tech story","link":"http://tech/story","id":"123456789"},(err,result)=>
+			throw err if err
+			@database.updateEntryState "123456789","read",(err,result)=>
+				@database.getEntries {"title":"An interesting tech story"},(err,result)->
+					expect(result[0].title).to.equal "An interesting tech story"
+					expect(result[0].state).to.equal "read"
+					expect(result[0].lastUpdatedState).to.exist
+					done()
+
+	it 'should be able to list recently read articles',(done)->
+		after.insertingSome(feedData).intoThe @database,(result)=>
+			@database.updateEntryState "1","read",(err,result)=>
+				@database.getLatestRead 10,(err,result)->
+					expect(result.length).to.equal 1
+					expect(result[0].title).to.equal "A news story"
+					done()
